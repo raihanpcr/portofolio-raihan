@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Portfolio – Raihan</title>
+
+      <!-- Tailwind CDN -->
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+            tailwind.config = {
+                  theme: {
+                        extend: {
+                              fontFamily: {
+                                    sans: ['Inter', 'system-ui', 'sans-serif'],
+                              },
+                              colors: {
+                                    primary: {
+                                          DEFAULT: '#6366F1',
+                                          dark: '#4F46E5',
+                                    },
+                              },
+                        },
+                  },
+                  darkMode: 'class',
+            }
+      </script>
+
+      <!-- Google Font (optional) -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+
+      <!-- Navbar -->
+      <header
+            class="sticky top-0 z-30 backdrop-blur bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div class="flex items-center justify-between h-16">
+                        <!-- Logo -->
+                        <a href="#hero" class="flex items-center gap-2">
+                              <div
+                                    class="w-8 h-8 rounded-2xl bg-primary flex items-center justify-center text-white font-semibold">
+                                    R
+                              </div>
+                              <span class="font-semibold tracking-tight text-slate-800 dark:text-slate-100">
+                                    Raihan
+                              </span>
+                        </a>
+
+                        <!-- Desktop Nav -->
+                        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                              <a href="#about"
+                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Tentang</a>
+                              <a href="#skills"
+                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Skill</a>
+                              <a href="#projects"
+                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Project</a>
+                              <a href="#contact"
+                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Kontak</a>
+
+                              <!-- Dark mode toggle -->
+                              <button id="themeToggle"
+                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                                    <span id="themeIcon" class="text-lg">🌙</span>
+                              </button>
+
+                              <a href="#contact"
+                                    class="ml-2 inline-flex items-center gap-1 rounded-xl bg-primary hover:bg-primary-dark text-white px-4 py-2 text-sm font-semibold shadow-sm">
+                                    Hire Me
+                              </a>
+                        </nav>
+
+                        <!-- Mobile -->
+                        <div class="flex items-center gap-2 md:hidden">
+                              <button id="themeToggleMobile"
+                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                                    <span id="themeIconMobile" class="text-lg">🌙</span>
+                              </button>
+                              <button id="menuToggle"
+                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                                    ☰
+                              </button>
+                        </div>
+                  </div>
+            </div>
+
+            <!-- Mobile Nav Menu -->
+            <div id="mobileMenu"
+                  class="md:hidden hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                  <nav class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-2 text-sm font-medium">
+                        <a href="#about" class="py-1 text-slate-700 dark:text-slate-200">Tentang</a>
+                        <a href="#skills" class="py-1 text-slate-700 dark:text-slate-200">Skill</a>
+                        <a href="#projects" class="py-1 text-slate-700 dark:text-slate-200">Project</a>
+                        <a href="#contact" class="py-1 text-slate-700 dark:text-slate-200">Kontak</a>
+                  </nav>
+            </div>
+      </header>
+
+      <main>
+            <!-- Hero -->
+            <section id="hero" class="pt-16 sm:pt-20 pb-16">
+                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center">
+                        <div data-animate>
+                              <p class="text-sm font-semibold tracking-wide text-primary uppercase mb-3">Backend & Web
+                                    Developer</p>
+                              <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                                    Halo, saya <span class="text-primary">Raihan</span>.<br />
+                                    Saya membuat website dan API yang <span class="underline decoration-primary">cepat &
+                                          scalable</span>.
+                              </h1>
+                              <p class="text-slate-600 dark:text-slate-300 mb-6">
+                                    Pengalaman di <strong>Laravel</strong> dan <strong>Golang</strong> untuk membangun
+                                    aplikasi web, REST API, dan sistem backend yang rapi, mudah di-maintain, serta siap
+                                    produksi.
+                              </p>
+                              <div class="flex flex-wrap items-center gap-3 mb-6">
+                                    <a href="#projects"
+                                          class="inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary-dark text-white px-5 py-2.5 text-sm font-semibold shadow">
+                                          Lihat Project
+                                    </a>
+                                    <a href="#contact"
+                                          class="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-100 px-5 py-2.5 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800">
+                                          Kontak Saya
+                                    </a>
+                              </div>
+                              <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                                    <div class="flex items-center gap-2">
+                                          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                          Open To Work
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                          Available for freelance
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                          <span
+                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Laravel</span>
+                                          <span
+                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Golang</span>
+                                          <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">REST
+                                                API</span>
+                                          <span
+                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Tailwind</span>
+                                    </div>
+                              </div>
+                        </div>
+
+                        <!-- Hero Card -->
+                        <div class="relative" data-animate>
+                              <div
+                                    class="absolute inset-0 -z-10 blur-3xl opacity-40 bg-gradient-to-tr from-primary/40 via-purple-400/30 to-sky-400/30 dark:opacity-60">
+                              </div>
+                              <div
+                                    class="relative rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-xl p-6 sm:p-8">
+                                    <div class="flex items-center gap-4 mb-6">
+
+                                          <img src="assets/_MG_9562_.jpg" alt=""
+                                                class="w-20 h-25 rounded-2xl bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
+                                          <div>
+                                                <h2 class="font-semibold text-lg">Raihan Alrasyid</h2>
+                                                <p class="text-xs text-slate-500 dark:text-slate-400">Laravel & Golang
+                                                      Developer</p>
+                                          </div>
+                                    </div>
+                                    <dl class="grid grid-cols-2 gap-4 text-xs">
+                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3">
+                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Pengalaman</dt>
+                                                <dd class="text-sm font-semibold">3+ tahun</dd>
+                                          </div>
+                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3">
+                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Fokus</dt>
+                                                <dd class="text-sm font-semibold">Backend & API</dd>
+                                          </div>
+                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3 col-span-2">
+                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Stack Utama</dt>
+                                                <dd class="text-sm font-semibold">Laravel, Golang, PostgreSQL, MySQL,
+                                                      Docker</dd>
+                                          </div>
+                                    </dl>
+                              </div>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- About -->
+            <section id="about" class="py-12 border-t border-slate-200 dark:border-slate-800">
+                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10 items-start">
+                        <div data-animate>
+                              <h2 class="text-xl sm:text-2xl font-bold mb-3">Tentang Saya</h2>
+                              <p class="text-slate-600 dark:text-slate-300 text-sm">
+                                    Saya adalah developer backend yang fokus membangun solusi web untuk bisnis:
+                                    mulai dari company profile, sistem internal, hingga integrasi pembayaran dan API.
+                              </p>
+                        </div>
+                        <div class="md:col-span-2 space-y-4 text-sm text-slate-600 dark:text-slate-300" data-animate>
+                              <p>
+                                    Saya terbiasa bekerja dengan Laravel dan Golang, mengutamakan struktur kode
+                                    yang bersih, mudah di-maintain, dan scalable. Saya juga nyaman bekerja dengan
+                                    pattern seperti service-repository, dan microservices.
+                              </p>
+                              <p>
+                                    Di luar itu, saya sering membantu UMKM dan bisnis kecil untuk go-digital:
+                                    mulai dari pembuatan website sederhana sampai dashboard admin untuk operasional.
+                              </p>
+                              <dl class="grid sm:grid-cols-3 gap-3 text-xs">
+                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
+                                          <dt class="text-slate-500 dark:text-slate-400">Lokasi</dt>
+                                          <dd class="font-semibold">Indonesia (Remote friendly)</dd>
+                                    </div>
+                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
+                                          <dt class="text-slate-500 dark:text-slate-400">Status</dt>
+                                          <dd class="font-semibold">Freelance & Open to work</dd>
+                                    </div>
+                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
+                                          <dt class="text-slate-500 dark:text-slate-400">Bahasa</dt>
+                                          <dd class="font-semibold">Indonesia, English (basic)</dd>
+                                    </div>
+                              </dl>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- Skills -->
+            <section id="skills" class="py-14">
+                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex items-end justify-between gap-4 mb-8">
+                              <div data-animate>
+                                    <h2 class="text-xl sm:text-2xl font-bold mb-2">Skill & Tools</h2>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                                          Beberapa teknologi yang sering saya gunakan dalam project sehari-hari.
+                                    </p>
+                              </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-6">
+                              <!-- Backend -->
+                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+                                    data-animate>
+                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
+                                          <span class="text-lg">🧠</span> Backend
+                                    </h3>
+                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                                          <li>Laravel (API, Fullstack)</li>
+                                          <li>Golang (Echo, Gin, REST API)</li>
+                                          <li>JWT, OAuth, Social Login</li>
+                                          <li>Microservices & Clean Architecture (basic)</li>
+                                    </ul>
+                              </div>
+
+                              <!-- Database -->
+                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+                                    data-animate>
+                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
+                                          <span class="text-lg">🗄️</span> Database & Infra
+                                    </h3>
+                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                                          <li>PostgreSQL, MySQL</li>
+                                          <li>MongoDB</li>
+                                          <li>Docker, docker-compose (basic)</li>
+                                    </ul>
+                              </div>
+
+                              <!-- Frontend -->
+                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+                                    data-animate>
+                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
+                                          <span class="text-lg">🎨</span> Frontend
+                                    </h3>
+                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                                          <li>HTML, CSS, JavaScript</li>
+                                          <li>Bootstrap, Tailwind CSS </li>
+                                          <li>Livewire</li>
+                                          <li>Basic frontend interactivity</li>
+                                    </ul>
+                              </div>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects" class="py-14 border-t border-slate-200 dark:border-slate-800">
+                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+                              <div data-animate>
+                                    <h2 class="text-xl sm:text-2xl font-bold mb-2">Project Terpilih</h2>
+                                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                                          Beberapa contoh project yang merepresentasikan kemampuan saya.
+                                    </p>
+                              </div>
+
+                              <!-- Filter -->
+                              <div class="flex flex-wrap gap-2 text-xs" data-animate>
+                                    <button
+                                          class="project-filter px-3 py-1.5 rounded-full border border-primary bg-primary text-white font-medium"
+                                          data-filter="all">
+                                          Semua
+                                    </button>
+                                    <button
+                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
+                                          data-filter="web">
+                                          Web App
+                                    </button>
+                                    <button
+                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
+                                          data-filter="api">
+                                          API
+                                    </button>
+                                    <button
+                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
+                                          data-filter="dashboard">
+                                          Dashboard
+                                    </button>
+                              </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-6">
+                              <!-- Project 1 -->
+                              <article class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 
+                                          bg-white dark:bg-slate-900 overflow-hidden flex flex-col
+                                          hover:shadow-lg transition" data-category="api" data-animate>
+
+                                    <!-- IMAGE / THUMBNAIL -->
+                                    <div class="relative h-44">
+                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div class="absolute inset-0 bg-gradient-to-tr 
+                                                from-black/70 via-black/40 to-black/10"></div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Sistem Rental Buku
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      Golang · MySQL
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Built a command-line interface (CLI) application for an e-commerce game
+                                                platform during the Hacktiv8 backend learning phase. Implemented core
+                                                features such as product listing, user transactions, and order history.
+                                                Focused on code structure, data persistence, and business logic.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl class="grid grid-cols-2 gap-3 text-[11px] mb-4
+                                                text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Backend Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Auth, CRUD, Payment
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      CLI
+                                                </span>
+
+                                                <div class="flex gap-3">
+                                                      <a href="https://github.com/raihanpcr/e-commerce-games"
+                                                            target="_blank"
+                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            GitHub
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 2 -->
+                              <article class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 
+                                                                        bg-white dark:bg-slate-900 overflow-hidden flex flex-col
+                                                                        hover:shadow-lg transition" data-category="api"
+                                    data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div class="absolute inset-0 bg-gradient-to-tr 
+                                                                              from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Pojok Baca API
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      Echo · PostgreSQL · Midtrans
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Developed a RESTful API platform for book purchases using a monolithic
+                                                architecture, focusing on forEach code structure, modularity, and
+                                                transactional reliability. Integrated key features such as user
+                                                authentication and authorization, book catalog management, order
+                                                processing, payment via Midtrans
+                                                Snap API.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl class="grid grid-cols-2 gap-3 text-[11px] mb-4
+                                                                              text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Backend Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Auth, CRUD, Payment
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      API
+                                                </span>
+
+                                                <div class="flex gap-3">
+                                                      <a href="https://github.com/raihanpcr/pojok-baca-api"
+                                                            target="_blank"
+                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            GitHub
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 3 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="api" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Booktopia
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      Golang · PostgreSQL · Microservice
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Built a modern e-commerce platform for book purchases using microservice
+                                                architecture with Golang.
+                                                Designed for scalability, modularity, and ease of development. Implement
+                                                independent services for
+                                                Authentication, transaction, wallet, book service, gifting service. All
+                                                services are seamlessly
+                                                integrated via an API Gateway to ensure clean communication and
+                                                maintainability.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4
+                                                                                                            text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Backend Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Auth, CRUD, Payment
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      API
+                                                </span>
+
+                                                <div class="flex gap-3">
+                                                      <a href="https://github.com/raihanpcr/pojok-baca-api"
+                                                            target="_blank"
+                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            GitHub
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 4 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="web" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_jokihan.PNG" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Jokihan
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      PHP · Bootstrap · MySQL
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Built a web-based application that offers website creation services,
+                                                allowing users to submit project
+                                                requests and manage service interactions. Focused on frontend
+                                                development, user input handling, and
+                                                backend integration for data management
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Landing Page, CRUD, Auth
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+
+                                                <div class="flex gap-3">
+                                                      <a href="https://jokihan.netlify.app/" target="_blank"
+                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            Demo
+                                                      </a>
+                                                      <a href="https://github.com/raihanpcr/jokihan" target="_blank"
+                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            GitHub
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 5 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="dashboard" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Dasboard SUMU
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      Laravel · Tailwind · Midtrans
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Developed a real-time, web-based dashboard system for Serikat Usaha
+                                                Muhammadiyah (SUMU) to
+                                                display business data and analytics. Integrated Midtrans for payment
+                                                processing and WhatsApp API
+                                                for notifications.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            CRUD, Auth, Payment, Whatsapp Verification
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 6 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="web dashboard" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_biogas.PNG" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      PTBg & PLTBg
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      CodeIgniter3 · Bootstrap · MySQL
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Developed a web-based monitoring system to track operational data and
+                                                performance metrics of
+                                                PTBg and PLTBg (Biogas and Biomass Power Plants). Focused on real-time
+                                                data visualization, admin
+                                                control, and reporting.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Admin Control, CRUD, Auth
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 7 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="web dashboard" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_dddtlh.PNG" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Web GIS DDDTLH
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      CodeIgniter3 · MySQL · ArcMap
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Developed a Geographic Information System (GIS) application to visualize
+                                                real-time data on Daya Dukung dan Daya Tampung Lingkungan Hidup
+                                                (DDDTLH). Designed to support
+                                                spatial analysis and environmental decision-making through interactive
+                                                maps and live data
+                                                rendering.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            GIS, CRUD, Auth
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 8 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="web dashboard" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_simoga.PNG" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      SIMOGA
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      CodeIgniter3 · Bootstrap · MySQL
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Implemented a monitoring system to track Fresh Fruit Bunch (TBS)
+                                                harvesting and delivery metrics.
+                                                Visualized productivity data to help improve supply chain transparency
+                                                and efficiency.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Admin Dashboard, Monitoring
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+                                          </div>
+                                    </div>
+                              </article>
+
+                              <!-- Project 9 -->
+                              <article
+                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
+                                    data-category="web dashboard" data-animate>
+                                    <div class="relative h-44">
+                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
+                                                class="w-full h-full object-cover">
+
+                                          <!-- overlay -->
+                                          <div
+                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
+                                          </div>
+
+                                          <div
+                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                                                <h3 class="text-sm font-semibold text-white">
+                                                      Warehouse Management
+                                                </h3>
+                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
+                                                      CodeIgniter3 · Bootstrap · MySQL
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="p-4 flex-1 flex flex-col">
+                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                                Developed a web-based dashboard to monitor warehouse inventory levels
+                                                and stock movements in
+                                                real time. Enabled visual reporting and analytics to support operational
+                                                decision-making.
+                                          </p>
+
+                                          <!-- META -->
+                                          <dl
+                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
+                                                <div>
+                                                      <dt>Peran</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Fullstack Developer
+                                                      </dd>
+                                                </div>
+                                                <div>
+                                                      <dt>Fitur</dt>
+                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
+                                                            Admin Control, CRUD, Auth
+                                                      </dd>
+                                                </div>
+                                          </dl>
+
+                                          <!-- FOOTER / LINKS -->
+                                          <div class="mt-auto flex items-center justify-between text-[11px]">
+                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                                                      Web App
+                                                </span>
+                                          </div>
+                                    </div>
+                              </article>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- Contact -->
+            <section id="contact" class="py-14">
+                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-start">
+                        <div data-animate>
+                              <h2 class="text-xl sm:text-2xl font-bold mb-3">Ayo Diskusi Project</h2>
+                              <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+                                    Punya ide website, sistem internal, atau ingin upgrade proses bisnis dengan aplikasi
+                                    custom?
+                                    Kirim pesan, saya akan bantu mapping kebutuhan dan perkiraan biayanya.
+                              </p>
+                              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                                    <li>✅ Bisa mulai dari project kecil</li>
+                                    <li>✅ Support after-delivery</li>
+                                    <li>✅ Dokumentasi basic untuk tim internal</li>
+                              </ul>
+
+                              <div class="mt-6 space-y-2 text-sm">
+                                    <p><strong>Email:</strong> raihanalrasyid20@gmail.com</p>
+                                    <p><strong>WhatsApp:</strong> +62 821 1997 8945</p>
+                                    <p><strong>GitHub:</strong> github.com/raihanpcr</p>
+                              </div>
+                        </div>
+
+                        <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
+                              data-animate>
+                              <form class="space-y-4 text-sm">
+                                    <div>
+                                          <label
+                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Nama</label>
+                                          <input type="text" id="name"
+                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
+                                                placeholder="Nama lengkap" />
+                                    </div>
+                                    <div>
+                                          <label
+                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Email
+                                                / WhatsApp</label>
+                                          <input type="text" id="emailwa"
+                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
+                                                placeholder="Email atau nomor WA" />
+                                    </div>
+                                    <div>
+                                          <label
+                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Jenis
+                                                Project</label>
+                                          <select id="project"
+                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70">
+                                                <option value="Website Company Profile">Website Company Profile</option>
+                                                <option value="Landing Page">Landing Page</option>
+                                                <option value="Sistem Internal / Dashboard">Sistem Internal / Dashboard
+                                                </option>
+                                                <option value="REST API / Microservice">REST API / Microservice</option>
+                                                <option value="Integrasi Pembayaran">Integrasi Pembayaran</option>
+                                          </select>
+                                    </div>
+                                    <div>
+                                          <label
+                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Deskripsi
+                                                Singkat</label>
+                                          <textarea rows="4" id="description"
+                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
+                                                placeholder="Ceritakan singkat kebutuhan project kamu..."></textarea>
+                                    </div>
+                                    <button type="button" onclick="sendWhatsApp()"
+                                          class="w-full rounded-xl bg-primary hover:bg-primary-dark text-white py-2.5 font-semibold">
+                                          Kirim
+                                    </button>
+                              </form>
+                        </div>
+                  </div>
+            </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-slate-200 dark:border-slate-800 py-6">
+            <div
+                  class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+                  <p>© <span id="year"></span> Raihan. All rights reserved.</p>
+                  <p>Built with Laravel, Golang & Tailwind.</p>
+            </div>
+      </footer>
+
+      <!-- Simple JS -->
+      <script>
+            // Tahun otomatis
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Theme toggle (dark / light)
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeToggleMobile = document.getElementById('themeToggleMobile');
+            const themeIconMobile = document.getElementById('themeIconMobile');
+
+            function setThemeIcon() {
+                  const isDark = html.classList.contains('dark');
+                  themeIcon.textContent = isDark ? '☀️' : '🌙';
+                  themeIconMobile.textContent = isDark ? '☀️' : '🌙';
+            }
+
+            function toggleTheme() {
+                  html.classList.toggle('dark');
+                  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                  setThemeIcon();
+            }
+
+            // Init theme from localStorage
+            if (localStorage.getItem('theme') === 'dark') {
+                  html.classList.add('dark');
+            }
+            setThemeIcon();
+
+            themeToggle.addEventListener('click', toggleTheme);
+            themeToggleMobile.addEventListener('click', toggleTheme);
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuToggle.addEventListener('click', () => {
+                  mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu on click nav
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                  link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                  });
+            });
+
+            // Project filtering
+            const filterButtons = document.querySelectorAll('.project-filter');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterButtons.forEach(btn => {
+                  btn.addEventListener('click', () => {
+                        const filter = btn.dataset.filter;
+
+                        filterButtons.forEach(b => {
+                              b.classList.remove('bg-primary', 'text-white', 'border-primary');
+                              b.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-100');
+                        });
+
+                        btn.classList.add('bg-primary', 'text-white', 'border-primary');
+                        btn.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-100');
+
+                        projectCards.forEach(card => {
+                              const category = card.dataset.category.split(' ');
+                              if (filter === 'all' || category.includes(filter)) {
+                                    card.classList.remove('hidden');
+                              } else {
+                                    card.classList.add('hidden');
+                              }
+                        });
+                  });
+            });
+
+            // Simple scroll animation
+            const animatedElements = document.querySelectorAll('[data-animate]');
+            animatedElements.forEach(el => {
+                  el.classList.add('opacity-0', 'translate-y-4', 'transition', 'duration-700');
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                  entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                              entry.target.classList.remove('opacity-0', 'translate-y-4');
+                              observer.unobserve(entry.target);
+                        }
+                  });
+            }, {
+                  threshold: 0.15
+            });
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            function sendWhatsApp() {
+                  const nama = document.getElementById('name').value;
+                  const kontak = document.getElementById('emailwa').value;
+                  const project = document.getElementById('project').value;
+                  const deskripsi = document.getElementById('description').value;
+
+                  const phone = "6282119978945";
+                  const message = `Halo, saya tertarik dengan jasa Anda.%0A%0A
+Nama: ${nama}%0A
+Kontak: ${kontak}%0A
+Jenis Project: ${project}%0A
+Deskripsi: ${deskripsi}`;
+
+                  const url = `https://wa.me/${phone}?text=${message}`;
+                  window.open(url, '_blank');
+            }
+      </script>
+</body>
+
+</html>
