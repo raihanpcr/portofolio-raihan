@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="robots" content="noindex" />
+      <meta name="theme-color" content="#070A11" />
+      <title>500 — Internal Server Error</title>
+
+      <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23070A11'/><text x='50' y='68' font-size='40' font-family='monospace' font-weight='700' fill='%23FF6B6B' text-anchor='middle'>500</text></svg>" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+      <script>
+            // Ikut tema yang dipilih di halaman utama. Dibungkus try/catch karena
+            // localStorage bisa dilarang (mode privat / cookie diblokir).
+            try {
+                  if (localStorage.getItem('theme') === 'light') {
+                        document.documentElement.classList.remove('dark');
+                  }
+            } catch (e) { }
+      </script>
+
+      <style>
+            :root {
+                  --bg: #F6F4EE; --panel: #FFFFFF; --panel-2: #ECE8DE; --border: #D9D3C6;
+                  --text: #2B3038; --dim: #6E7683; --green: #17914B; --cyan: #0B7C91;
+                  --amber: #A66A00; --magenta: #8B3FBF; --red: #C0392B; --scan: rgba(0, 0, 0, .045);
+            }
+            .dark {
+                  --bg: #070A11; --panel: #0C1119; --panel-2: #121926; --border: #1F2A3A;
+                  --text: #C6D2E0; --dim: #6B7A8D; --green: #3DDC84; --cyan: #22D3EE;
+                  --amber: #F5C518; --magenta: #C792EA; --red: #FF6B6B; --scan: rgba(255, 255, 255, .028);
+            }
+
+            * { box-sizing: border-box; }
+
+            html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+
+            body {
+                  margin: 0; padding: 22px 16px 60px;
+                  background: transparent; color: var(--text);
+                  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+                  font-size: 13px; line-height: 1.8;
+                  min-height: 100vh;
+            }
+
+            ::selection { background: var(--red); color: var(--bg); }
+
+            .crt {
+                  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+                  background:
+                        repeating-linear-gradient(to bottom, var(--scan) 0 1px, transparent 1px 3px),
+                        radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, .3) 100%);
+            }
+            :root:not(.dark) .crt { background: repeating-linear-gradient(to bottom, var(--scan) 0 1px, transparent 1px 3px); }
+
+            .wrap { max-width: 860px; margin: 0 auto; }
+
+            .win { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+            .win-bar {
+                  display: flex; align-items: center; gap: 10px; padding: 7px 12px;
+                  background: var(--panel-2); border-bottom: 1px solid var(--border);
+                  font-size: 11px; color: var(--dim);
+            }
+            .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+            .win-body { padding: 22px 18px; }
+            @media (min-width: 640px) { .win-body { padding: 28px; } }
+
+            .ascii {
+                  font-size: clamp(6px, 2.4vw, 15px);
+                  line-height: 1.02; white-space: pre; margin: 0;
+                  color: var(--red);
+                  animation: flicker 4.2s steps(1, end) infinite;
+            }
+            @keyframes flicker {
+                  0%, 88%, 100% { opacity: 1; transform: none; }
+                  89% { opacity: .35; transform: translateX(-4px); }
+                  90% { opacity: 1; transform: translateX(3px); }
+                  91% { opacity: .5; transform: none; }
+            }
+
+            .dim { color: var(--dim); }
+            .ok { color: var(--green); }
+            .warn { color: var(--amber); }
+            .info { color: var(--cyan); }
+            .mag { color: var(--magenta); }
+            .bad { color: var(--red); }
+
+            .p-user { color: var(--green); font-weight: 600; }
+            .p-path { color: var(--cyan); }
+            .p-sign { color: var(--magenta); }
+
+            .box { border: 1px solid var(--border); border-radius: 6px; background: var(--panel-2); padding: 14px; }
+
+            pre.trace {
+                  margin: 0; white-space: pre-wrap; word-break: break-word;
+                  font: inherit; font-size: 12px; color: var(--text);
+            }
+
+            .joke {
+                  border-left: 3px solid var(--amber);
+                  padding: 10px 14px; background: var(--panel-2);
+                  border-radius: 0 6px 6px 0; font-size: 13.5px;
+            }
+
+            .btn {
+                  display: inline-flex; align-items: center; gap: 8px;
+                  font-family: inherit; font-size: 13px; padding: 10px 18px;
+                  border-radius: 5px; cursor: pointer; text-decoration: none;
+                  border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+                  transition: border-color .15s, color .15s, transform .15s;
+            }
+            .btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+            .btn-primary { background: var(--green); border-color: var(--green); color: var(--bg); font-weight: 600; }
+            :root:not(.dark) .btn-primary { color: #fff; }
+            .btn-primary:hover { background: transparent; color: var(--green); }
+
+            .cursor {
+                  display: inline-block; width: 8px; height: 14px; vertical-align: -2px;
+                  background: var(--green); animation: blink 1.05s steps(2) infinite;
+            }
+            @keyframes blink { 50% { opacity: 0; } }
+
+            @media (prefers-reduced-motion: reduce) {
+                  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            }
+      </style>
+</head>
+
+<body>
+      <div class="crt"></div>
+
+      <div class="wrap">
+            <div class="win">
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span style="margin-left:4px">raihan@portfolio: ~/var/log</span>
+                        <span style="margin-left:auto" class="bad">● crashed</span>
+                  </div>
+
+                  <div class="win-body">
+                        <pre class="ascii" aria-label="500">███████╗ ██████╗  ██████╗
+██╔════╝██╔═████╗██╔═████╗
+███████╗██║██╔██║██║██╔██║
+╚════██║████╔╝██║████╔╝██║
+███████║╚██████╔╝╚██████╔╝
+╚══════╝ ╚═════╝  ╚═════╝ </pre>
+
+                        <p style="margin:6px 0 26px" class="dim">
+                              <span class="bad">500</span> Internal Server Error &nbsp;·&nbsp; ada yang pencet tombol merah
+                        </p>
+
+                        <!-- Stack trace -->
+                        <p style="margin:0 0 8px">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/var/log</span><span class="p-sign">$</span>
+                              tail -f panic.log
+                        </p>
+                        <div class="box" style="margin-bottom:24px">
+                              <pre class="trace"><span class="bad">panic:</span> runtime error: kopi index out of range [0] with length 0
+
+goroutine 1 [running, sangat ngantuk]:
+raihan.(*Developer).Deploy(0xdeadbeef, <span class="warn">"jumat"</span>, <span class="warn">"16:55"</span>)
+        /home/raihan/prod/<span class="info">jangan_deploy_jumat.go</span>:13 +0x1f
+raihan.(*Developer).FixLater(0x0)
+        /home/raihan/prod/<span class="info">technical_debt.go</span>:2077 +0xdeadc0de
+raihan.main()
+        /home/raihan/prod/<span class="info">main.go</span>:1 +0x20
+
+<span class="dim">exit status 2</span></pre>
+                        </div>
+
+                        <!-- Joke -->
+                        <p style="margin:0 0 8px">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/var/log</span><span class="p-sign">$</span>
+                              cat alasan.txt
+                        </p>
+                        <p class="joke" id="joke" style="margin:0 0 24px">&nbsp;</p>
+
+                        <!-- Diagnosis -->
+                        <p style="margin:0 0 8px">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/var/log</span><span class="p-sign">$</span>
+                              ./diagnosa.sh
+                        </p>
+                        <div class="box" style="margin-bottom:24px">
+                              <div id="diagnosa"></div>
+                        </div>
+
+                        <!-- Restart -->
+                        <p style="margin:0 0 8px">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/var/log</span><span class="p-sign">$</span>
+                              <span id="restartLine"></span><span class="cursor"></span>
+                        </p>
+                        <div id="restartOut" style="margin-bottom:26px"></div>
+
+                        <div style="display:flex;flex-wrap:wrap;gap:10px">
+                              <a href="index.html" class="btn btn-primary">systemctl restart raihan</a>
+                              <a href="index.html#contact" class="btn">lapor ke admin</a>
+                              <button type="button" class="btn" id="againBtn">alasan lain</button>
+                        </div>
+
+                        <p class="dim" style="margin:26px 0 0;font-size:11.5px">
+                              // halaman ini sengaja dibuat sebagai candaan. tidak ada yang benar-benar rusak,
+                              server-nya baik-baik saja, dan kopinya sudah diisi ulang.
+                        </p>
+                  </div>
+            </div>
+      </div>
+
+      <script>
+            // Kalimat ini cuma masuk akal kalau pengunjung memang baru memencet
+            // tombol merah, jadi dipisah dari daftar alasan acak di bawah.
+            var ALASAN_PANIK = 'Udah dibilang jangan dipencet. Ga ada apa-apa juga di sini.';
+
+            var ALASAN = [
+                  'Ini bukan bug, ini fitur yang belum sempat didokumentasikan.',
+                  'Server-nya sehat kok. Yang capek developer-nya.',
+                  'Works on my machine. Sungguh. Saya sudah cek dua kali.',
+                  'Sudah di-restart. Masih error. Sudah di-restart lagi. Masih error. Sudah dibiarkan. Jalan sendiri.',
+                  'Ada yang deploy hari Jumat jam 5 sore. Tidak akan saya sebut siapa. (Saya.)',
+                  'Error 500 artinya salahnya di server, bukan di kamu. Nikmati momen langka ini.',
+                  'Database-nya tidak down, cuma sedang me time.',
+                  'Root cause: satu titik koma. Selalu satu titik koma.',
+                  'Di staging mulus banget. Sumpah. Mulus banget.',
+                  'Log-nya sudah dibaca sampai habis. Isinya cuma "undefined".',
+                  'Container-nya restart terus. Sepertinya dia juga tidak mau masuk kerja.',
+                  'Ini kenapa kita butuh staging. Dan kenapa kita tetap tidak pakai staging.',
+                  'Cache-nya sudah dibersihkan. Masalahnya bukan di cache. Tapi lega juga.',
+                  'Sudah saya tambahkan try-catch. Sekarang error-nya diam-diam saja.'
+            ];
+
+            var DIAGNOSA = [
+                  ['listrik', 'ok', 'ok'],
+                  ['koneksi internet', 'ok', 'ok'],
+                  ['stok kopi', 'EMPTY', 'bad'],
+                  ['semangat', 'degraded', 'warn'],
+                  ['deploy_jumat_sore', 'true', 'bad'],
+                  ['dokumentasi', 'not found', 'warn'],
+                  ['harapan', 'ok', 'ok']
+            ];
+
+            var jokeEl = document.getElementById('joke');
+            var lastIndex = -1;
+
+            function pickJoke() {
+                  var i = Math.floor(Math.random() * ALASAN.length);
+                  if (ALASAN.length > 1 && i === lastIndex) i = (i + 1) % ALASAN.length;
+                  lastIndex = i;
+                  jokeEl.textContent = ALASAN[i];
+            }
+
+            // Datang dari tombol merah? Sambut dengan sindiran dulu, baru acak.
+            if (location.search.indexOf('from=panic') !== -1) {
+                  jokeEl.textContent = ALASAN_PANIK;
+            } else {
+                  pickJoke();
+            }
+
+            document.getElementById('againBtn').addEventListener('click', pickJoke);
+
+            // Hasil diagnosa muncul satu per satu
+            (function renderDiagnosa() {
+                  var wrap = document.getElementById('diagnosa');
+                  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                  function row(d) {
+                        var mark = d[2] === 'ok' ? '[<span class="ok">✓</span>]'
+                              : d[2] === 'warn' ? '[<span class="warn">!</span>]'
+                                    : '[<span class="bad">✗</span>]';
+                        var pad = Math.max(1, 22 - d[0].length);
+                        return mark + ' ' + d[0] + '<span class="dim">' + new Array(pad + 1).join('.') + '</span> ' +
+                              '<span class="' + d[2] + '">' + d[1] + '</span>';
+                  }
+
+                  if (reduced) {
+                        wrap.innerHTML = DIAGNOSA.map(function (d) { return '<p style="margin:0">' + row(d) + '</p>'; }).join('');
+                        return;
+                  }
+                  var i = 0;
+                  (function next() {
+                        if (i >= DIAGNOSA.length) return;
+                        var p = document.createElement('p');
+                        p.style.margin = '0';
+                        p.innerHTML = row(DIAGNOSA[i++]);
+                        wrap.appendChild(p);
+                        setTimeout(next, 220);
+                  })();
+            })();
+
+            // Baris restart yang mengetik sendiri lalu gagal (tentu saja)
+            (function typeRestart() {
+                  var line = document.getElementById('restartLine');
+                  var out = document.getElementById('restartOut');
+                  var cmd = 'systemctl restart raihan.service';
+                  var result = [
+                        '<span class="dim">Job for raihan.service failed because the control process exited.</span>',
+                        '<span class="dim">See "systemctl status raihan.service" and "journalctl -xe" for details.</span>',
+                        '<span class="warn">hint:</span> coba tombol hijau di bawah. itu biasanya berhasil.'
+                  ];
+                  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                  if (reduced) {
+                        line.textContent = cmd;
+                        out.innerHTML = result.map(function (r) { return '<p style="margin:0">' + r + '</p>'; }).join('');
+                        return;
+                  }
+
+                  var i = 0;
+                  (function type() {
+                        if (i <= cmd.length) {
+                              line.textContent = cmd.slice(0, i++);
+                              setTimeout(type, 45);
+                              return;
+                        }
+                        var k = 0;
+                        (function printLine() {
+                              if (k >= result.length) return;
+                              var p = document.createElement('p');
+                              p.style.margin = '0';
+                              p.innerHTML = result[k++];
+                              out.appendChild(p);
+                              setTimeout(printLine, 380);
+                        })();
+                  })();
+            })();
+      </script>
+</body>
+
+</html>

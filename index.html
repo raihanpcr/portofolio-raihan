@@ -1,1090 +1,1678 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth dark">
 
 <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Portfolio – Raihan</title>
+      <meta name="description"
+            content="Raihan Alrasyid — Backend & DevOps Engineer. REST API, microservice, Docker, dan CI/CD dengan Laravel & Golang." />
+      <meta name="theme-color" content="#080B12" />
+      <title>raihan@portfolio — Backend &amp; DevOps Engineer</title>
 
-      <!-- Tailwind CDN -->
+      <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23080B12'/><text x='16' y='64' font-size='42' font-family='monospace' font-weight='700' fill='%233DDC84'>&gt;_</text></svg>" />
+
       <script src="https://cdn.tailwindcss.com"></script>
       <script>
             tailwind.config = {
+                  darkMode: 'class',
                   theme: {
                         extend: {
-                              fontFamily: {
-                                    sans: ['Inter', 'system-ui', 'sans-serif'],
-                              },
+                              fontFamily: { mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
                               colors: {
-                                    primary: {
-                                          DEFAULT: '#6366F1',
-                                          dark: '#4F46E5',
+                                    term: {
+                                          green: 'var(--green)', cyan: 'var(--cyan)', amber: 'var(--amber)',
+                                          magenta: 'var(--magenta)', red: 'var(--red)', blue: 'var(--blue)',
+                                          dim: 'var(--dim)', txt: 'var(--text)',
                                     },
                               },
                         },
                   },
-                  darkMode: 'class',
             }
       </script>
 
-      <!-- Google Font (optional) -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+      <!-- Three.js: topologi cluster 3D di hero -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+      <script>
+            // Menandai JS aktif; animasi reveal hanya dipasang kalau kelas ini ada.
+            document.documentElement.classList.add('js');
+      </script>
+
+      <style>
+            /* ============ PALET ANSI ============ */
+            :root {
+                  --bg: #F6F4EE;
+                  --panel: #FFFFFF;
+                  --panel-2: #ECE8DE;
+                  --border: #D9D3C6;
+                  --text: #2B3038;
+                  --dim: #6E7683;
+                  --green: #17914B;
+                  --cyan: #0B7C91;
+                  --amber: #A66A00;
+                  --magenta: #8B3FBF;
+                  --red: #C0392B;
+                  --blue: #3B5BDB;
+                  --scan: rgba(0, 0, 0, .045);
+                  --glow: none;
+            }
+
+            .dark {
+                  --bg: #070A11;
+                  --panel: #0C1119;
+                  --panel-2: #121926;
+                  --border: #1F2A3A;
+                  --text: #C6D2E0;
+                  --dim: #6B7A8D;
+                  --green: #3DDC84;
+                  --cyan: #22D3EE;
+                  --amber: #F5C518;
+                  --magenta: #C792EA;
+                  --red: #FF6B6B;
+                  --blue: #7C8CFF;
+                  --scan: rgba(255, 255, 255, .028);
+                  --glow: 0 0 12px rgba(61, 220, 132, .35);
+            }
+
+            html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+
+            body {
+                  background: transparent;
+                  color: var(--text);
+                  overflow-x: hidden;
+                  font-feature-settings: "liga" 0;
+                  padding-bottom: 30px; /* ruang untuk status bar */
+            }
+
+            ::selection { background: var(--green); color: var(--bg); }
+
+            ::-webkit-scrollbar { width: 11px; height: 11px; }
+            ::-webkit-scrollbar-track { background: var(--panel-2); }
+            ::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--panel-2); }
+            ::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+
+            /* ============ LAPISAN CRT ============ */
+            .crt {
+                  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+                  background:
+                        repeating-linear-gradient(to bottom, var(--scan) 0 1px, transparent 1px 3px),
+                        radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, .28) 100%);
+            }
+            :root:not(.dark) .crt { background: repeating-linear-gradient(to bottom, var(--scan) 0 1px, transparent 1px 3px); }
+
+            .bg-grid {
+                  position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+                  background-image:
+                        linear-gradient(to right, var(--border) 1px, transparent 1px),
+                        linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+                  background-size: 72px 72px;
+                  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 90%);
+                  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 90%);
+            }
+
+            /* ============ WINDOW TERMINAL ============ */
+            .win {
+                  background: var(--panel);
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  overflow: hidden;
+            }
+            .dark .win { box-shadow: 0 20px 50px -30px rgba(0, 0, 0, .9); }
+
+            .win-bar {
+                  display: flex; align-items: center; gap: 10px;
+                  padding: 7px 12px;
+                  background: var(--panel-2);
+                  border-bottom: 1px solid var(--border);
+                  font-size: 11px; color: var(--dim);
+            }
+            .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+            .win-body { padding: 20px 18px; }
+            @media (min-width: 640px) { .win-body { padding: 26px 26px; } }
+
+            /* ============ PROMPT ============ */
+            .prompt { font-size: 13px; line-height: 1.7; word-break: break-word; }
+            .p-user { color: var(--green); font-weight: 600; }
+            .p-path { color: var(--cyan); }
+            .p-sign { color: var(--magenta); }
+            .p-cmd { color: var(--text); font-weight: 500; }
+            .p-flag { color: var(--amber); }
+
+            .cursor {
+                  display: inline-block; width: 8px; height: 15px; vertical-align: -2px;
+                  background: var(--green); box-shadow: var(--glow);
+                  animation: blink 1.05s steps(2) infinite;
+            }
+            @keyframes blink { 50% { opacity: 0; } }
+
+            .out { font-size: 13px; line-height: 1.85; color: var(--text); }
+            .dim { color: var(--dim); }
+            .ok { color: var(--green); }
+            .warn { color: var(--amber); }
+            .info { color: var(--cyan); }
+            .mag { color: var(--magenta); }
+
+            /* ============ ASCII BANNER ============ */
+            .ascii {
+                  font-size: clamp(4.4px, 1.32vw, 12px);
+                  line-height: 1.02;
+                  white-space: pre;
+                  color: var(--green);
+                  text-shadow: var(--glow);
+                  letter-spacing: 0;
+                  overflow: hidden;
+            }
+
+            /* ============ TAB BAR (tmux) ============ */
+            .tabbar { background: var(--panel-2); border-bottom: 1px solid var(--border); }
+            .tab {
+                  font-size: 12px; padding: 6px 11px; color: var(--dim);
+                  border: 1px solid transparent; border-radius: 4px;
+                  transition: color .15s, background .15s;
+                  white-space: nowrap;
+            }
+            .tab:hover { color: var(--text); background: var(--panel); }
+            .tab.active { color: var(--bg); background: var(--green); font-weight: 600; }
+            :root:not(.dark) .tab.active { color: #fff; }
+
+            /* ============ STATUS BAR ============ */
+            .statusbar {
+                  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+                  height: 30px; display: flex; align-items: center;
+                  background: var(--panel-2); border-top: 1px solid var(--border);
+                  font-size: 11px; color: var(--dim);
+            }
+            .sb-seg { padding: 0 10px; height: 100%; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+            .sb-accent { background: var(--green); color: var(--bg); font-weight: 700; }
+            :root:not(.dark) .sb-accent { color: #fff; }
+
+            /* ============ ELEMEN LAIN ============ */
+            .btn {
+                  display: inline-flex; align-items: center; gap: 8px;
+                  font-size: 13px; padding: 9px 16px; border-radius: 5px;
+                  border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+                  transition: border-color .15s, color .15s, background .15s, transform .15s;
+            }
+            .btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+            .btn-primary { background: var(--green); border-color: var(--green); color: var(--bg); font-weight: 600; }
+            :root:not(.dark) .btn-primary { color: #fff; }
+            .btn-primary:hover { background: transparent; color: var(--green); }
+
+            .box { border: 1px solid var(--border); border-radius: 6px; background: var(--panel-2); }
+            .box-hover { transition: border-color .2s, transform .2s; }
+            .box-hover:hover { border-color: var(--green); transform: translateY(-2px); }
+
+            .field {
+                  width: 100%; font-family: inherit; font-size: 13px;
+                  background: var(--panel-2); border: 1px solid var(--border); border-radius: 5px;
+                  padding: 9px 11px; color: var(--text); outline: none;
+                  transition: border-color .15s, box-shadow .15s;
+            }
+            .field::placeholder { color: var(--dim); }
+            .field:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(61, 220, 132, .18); }
+
+            /* ============ FOTO GLITCH (siaran rusak) ============
+               Foto asli selalu tampil sebagai lapisan dasar. Semua efek adalah
+               lapisan tambahan yang normalnya opacity 0, jadi kalau mix-blend-mode
+               atau clip-path tidak didukung, yang terlihat tetap foto bersih. */
+            .glitch-img {
+                  position: relative;
+                  overflow: hidden;
+                  border-radius: 4px;
+                  border: 1px solid var(--border);
+                  isolation: isolate; /* kurung blending supaya tidak bocor ke halaman */
+                  background: #000;
+                  /* Dibatasi supaya di layar sempit foto tidak melar jadi letterbox
+                     lebar yang memotong kepala. */
+                  max-width: 260px;
+            }
+            /* object-position dan background-position harus sama persis, kalau tidak
+               lapisan glitch akan meleset dari foto dasarnya. */
+            .glitch-img > img { display: block; width: 100%; height: 200px; object-fit: cover; object-position: center 22%; }
+
+            .gi-layer {
+                  position: absolute; inset: 0;
+                  background-size: cover; background-position: center 22%;
+                  opacity: 0; pointer-events: none;
+                  will-change: transform, opacity, clip-path;
+            }
+
+            /* Pemisahan kanal warna: multiply mengisolasi kanal, screen menyatukannya lagi */
+            .gi-r { background-color: #FF2D2D; background-blend-mode: multiply; mix-blend-mode: screen; animation: gi-red 7s steps(1, end) infinite; }
+            .gi-c { background-color: #2DFFF5; background-blend-mode: multiply; mix-blend-mode: screen; animation: gi-cyan 5.3s steps(1, end) infinite; }
+            .gi-slice { animation: gi-slice 6.1s steps(1, end) infinite; filter: brightness(1.35) contrast(1.5); }
+
+            @keyframes gi-red {
+                  0%, 87%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+                  88% { opacity: .85; transform: translateX(-11px); clip-path: inset(8% 0 74% 0); }
+                  90% { opacity: .75; transform: translateX(9px);   clip-path: inset(44% 0 36% 0); }
+                  92% { opacity: .85; transform: translateX(-7px);  clip-path: inset(71% 0 12% 0); }
+                  94% { opacity: 0; clip-path: inset(0 0 100% 0); }
+            }
+            @keyframes gi-cyan {
+                  0%, 90%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+                  91% { opacity: .8; transform: translateX(12px);  clip-path: inset(16% 0 62% 0); }
+                  93% { opacity: .75; transform: translateX(-13px); clip-path: inset(52% 0 28% 0); }
+                  95% { opacity: .85; transform: translateX(8px);   clip-path: inset(3% 0 88% 0); }
+                  97% { opacity: 0; clip-path: inset(0 0 100% 0); }
+            }
+            @keyframes gi-slice {
+                  0%, 83%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+                  84% { opacity: 1; transform: translateX(19px);  clip-path: inset(24% 0 68% 0); }
+                  86% { opacity: 1; transform: translateX(-23px); clip-path: inset(57% 0 38% 0); }
+                  88% { opacity: 1; transform: translateX(14px);  clip-path: inset(80% 0 12% 0); }
+                  /* satu frame seluruh gambar tergeser — puncak "sinyal putus" */
+                  89% { opacity: 1; transform: translateX(-9px) scaleY(1.03); clip-path: inset(0 0 0 0); }
+                  90% { opacity: 0; clip-path: inset(0 0 100% 0); }
+            }
+
+            /* Scanline + rolling bar CRT: selalu jalan, halus */
+            .gi-scan {
+                  position: absolute; inset: 0; pointer-events: none;
+                  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .3) 0 1px, transparent 1px 3px);
+                  opacity: .55;
+            }
+            .gi-roll {
+                  position: absolute; left: 0; right: 0; height: 24%; pointer-events: none;
+                  background: linear-gradient(to bottom, transparent, rgba(61, 220, 132, .12), transparent);
+                  animation: gi-roll 5.5s linear infinite;
+            }
+            @keyframes gi-roll { 0% { top: -25%; } 100% { top: 105%; } }
+
+            .gi-noise {
+                  position: absolute; inset: 0; pointer-events: none; opacity: .07;
+                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+                  animation: gi-noise 6.1s steps(1, end) infinite;
+            }
+            @keyframes gi-noise { 0%, 83%, 91%, 100% { opacity: .07; } 84%, 88% { opacity: .3; } }
+
+            .gi-tag {
+                  position: absolute; left: 6px; bottom: 6px; z-index: 2;
+                  font-size: 9px; letter-spacing: .08em;
+                  padding: 1px 5px; color: #FF4D4D;
+                  background: rgba(0, 0, 0, .72); border: 1px solid rgba(255, 77, 77, .5);
+                  opacity: 0; animation: gi-tag 7s steps(1, end) infinite;
+            }
+            @keyframes gi-tag { 0%, 87%, 95%, 100% { opacity: 0; } 88%, 93% { opacity: 1; } }
+
+            /* Hover: sinyal makin kacau */
+            .glitch-img:hover .gi-r { animation-duration: 1.5s; }
+            .glitch-img:hover .gi-c { animation-duration: 1.15s; }
+            .glitch-img:hover .gi-slice { animation-duration: 1.3s; }
+            .glitch-img:hover .gi-noise { animation-duration: 1.3s; }
+            .glitch-img:hover .gi-tag { animation-duration: 1.5s; }
+
+            /* ============ TOMBOL DARURAT ============ */
+            .panic {
+                  position: fixed; left: 14px; bottom: 42px; z-index: 45;
+                  display: block; text-decoration: none; overflow: hidden;
+                  border: 1px solid var(--border); border-radius: 9px;
+                  background: var(--panel);
+                  box-shadow: 0 12px 32px -14px rgba(0, 0, 0, .65);
+                  transition: transform .15s, border-color .15s;
+            }
+            .panic:hover { transform: translateY(-2px); border-color: var(--red); }
+            .panic:active { transform: translateY(1px) scale(.97); }
+
+            .panic-top { height: 7px; background: repeating-linear-gradient(45deg, #F5C518 0 7px, #0B0B0B 7px 14px); }
+            .panic-body { display: flex; align-items: center; gap: 10px; padding: 9px 13px 9px 10px; }
+
+            .panic-dome {
+                  position: relative; flex: none;
+                  width: 34px; height: 34px; border-radius: 50%;
+                  background: radial-gradient(circle at 34% 28%, #FF9B9B 0%, #E02424 55%, #7F1010 100%);
+                  box-shadow: 0 0 0 3px #2A0D0D, 0 0 0 4px #4B5563, inset 0 -3px 7px rgba(0, 0, 0, .55);
+            }
+            .panic-dome::after {
+                  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+                  border: 1px solid rgba(224, 36, 36, .7);
+                  animation: panicRing 2.2s ease-out infinite;
+            }
+            @keyframes panicRing {
+                  0% { transform: scale(.88); opacity: .9; }
+                  100% { transform: scale(1.55); opacity: 0; }
+            }
+            .panic:hover .panic-dome { animation: panicShake .32s linear infinite; }
+            @keyframes panicShake {
+                  0%, 100% { transform: translate(0, 0); }
+                  25% { transform: translate(-1.5px, 1px); }
+                  50% { transform: translate(1.5px, -1px); }
+                  75% { transform: translate(-1px, -1.5px); }
+            }
+
+            .panic-label { line-height: 1.3; }
+            .panic-label b { display: block; font-size: 10.5px; font-weight: 700; color: var(--red); letter-spacing: .03em; white-space: nowrap; }
+            .panic-label span { display: block; font-size: 9px; color: var(--dim); white-space: nowrap; }
+
+            /* Layar "crash" sebelum pindah ke halaman 500 */
+            .crash {
+                  position: fixed; inset: 0; z-index: 100;
+                  background: #05070B; color: #FF6B6B;
+                  padding: 10vw 7vw; overflow: hidden;
+                  font-size: 13px; line-height: 1.9;
+            }
+            .crash::after {
+                  content: ""; position: absolute; inset: 0; pointer-events: none;
+                  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, .05) 0 1px, transparent 1px 3px);
+            }
+            .crashing { animation: crashShake .26s steps(2) infinite; }
+            @keyframes crashShake {
+                  0%, 100% { transform: translate(0, 0); }
+                  33% { transform: translate(-3px, 2px); }
+                  66% { transform: translate(3px, -2px); }
+            }
+
+            /* Reveal — digate .js supaya tanpa JavaScript konten tetap terlihat */
+            .js [data-animate] { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+            .js [data-animate].is-in { opacity: 1; transform: none; }
+
+            /* Marquee status service */
+            .marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+            .marquee-track { display: flex; width: max-content; animation: slide 40s linear infinite; }
+            .marquee:hover .marquee-track { animation-play-state: paused; }
+            @keyframes slide { to { transform: translateX(-50%); } }
+
+            /* Konsol interaktif */
+            #consoleLog { max-height: 320px; overflow-y: auto; scrollbar-width: thin; }
+            #consoleInput { background: transparent; border: 0; outline: none; color: var(--text); font-family: inherit; font-size: 13px; flex: 1; caret-color: var(--green); }
+
+            /* Scene 3D */
+            #hero3d { display: block; width: 100%; height: 100%; }
+            .orb-fallback {
+                  width: 55%; aspect-ratio: 1; border-radius: 50%;
+                  border: 1px dashed var(--green); opacity: .6;
+                  animation: spin 18s linear infinite;
+            }
+            @keyframes spin { to { transform: rotate(360deg); } }
+
+            a { text-underline-offset: 3px; }
+
+            @media (prefers-reduced-motion: reduce) {
+                  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+                  .js [data-animate] { opacity: 1; transform: none; }
+            }
+      </style>
 </head>
 
-<body class="font-sans bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+<body class="font-mono">
 
-      <!-- Navbar -->
-      <header
-            class="sticky top-0 z-30 backdrop-blur bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div class="flex items-center justify-between h-16">
-                        <!-- Logo -->
-                        <a href="#hero" class="flex items-center gap-2">
-                              <div
-                                    class="w-8 h-8 rounded-2xl bg-primary flex items-center justify-center text-white font-semibold">
-                                    R
-                              </div>
-                              <span class="font-semibold tracking-tight text-slate-800 dark:text-slate-100">
-                                    Raihan
-                              </span>
-                        </a>
+      <div class="bg-grid"></div>
+      <div class="crt"></div>
 
-                        <!-- Desktop Nav -->
-                        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-                              <a href="#about"
-                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Tentang</a>
-                              <a href="#skills"
-                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Skill</a>
-                              <a href="#projects"
-                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Project</a>
-                              <a href="#contact"
-                                    class="nav-link text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary">Kontak</a>
+      <!-- ============ TAB BAR ============ -->
+      <header class="sticky top-0 z-40 tabbar">
+            <div class="max-w-6xl mx-auto px-3 sm:px-5">
+                  <div class="flex items-center justify-between h-11 gap-3">
 
-                              <!-- Dark mode toggle -->
-                              <button id="themeToggle"
-                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                                    <span id="themeIcon" class="text-lg">🌙</span>
-                              </button>
+                        <div class="flex items-center gap-2 shrink-0">
+                              <span class="text-[13px] font-bold" style="color:var(--green)">&gt;_</span>
+                              <span class="text-[12px] hidden sm:inline" style="color:var(--dim)">raihan@portfolio</span>
+                        </div>
 
-                              <a href="#contact"
-                                    class="ml-2 inline-flex items-center gap-1 rounded-xl bg-primary hover:bg-primary-dark text-white px-4 py-2 text-sm font-semibold shadow-sm">
-                                    Hire Me
-                              </a>
+                        <nav class="hidden md:flex items-center gap-1 overflow-x-auto">
+                              <a href="#hero" class="tab nav-link">0:home</a>
+                              <a href="#about" class="tab nav-link">1:about</a>
+                              <a href="#skills" class="tab nav-link">2:skills</a>
+                              <a href="#devops" class="tab nav-link">3:devops</a>
+                              <a href="#projects" class="tab nav-link">4:projects</a>
+                              <a href="#console" class="tab nav-link">5:shell</a>
+                              <a href="#contact" class="tab nav-link">6:contact</a>
                         </nav>
 
-                        <!-- Mobile -->
-                        <div class="flex items-center gap-2 md:hidden">
-                              <button id="themeToggleMobile"
-                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                                    <span id="themeIconMobile" class="text-lg">🌙</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                              <button id="themeToggle" class="tab" aria-label="Ganti tema">
+                                    <span id="themeLabel">[dark]</span>
                               </button>
-                              <button id="menuToggle"
-                                    class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                                    ☰
-                              </button>
+                              <button id="menuToggle" class="tab md:hidden" aria-label="Menu">[menu]</button>
                         </div>
                   </div>
-            </div>
 
-            <!-- Mobile Nav Menu -->
-            <div id="mobileMenu"
-                  class="md:hidden hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-                  <nav class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-2 text-sm font-medium">
-                        <a href="#about" class="py-1 text-slate-700 dark:text-slate-200">Tentang</a>
-                        <a href="#skills" class="py-1 text-slate-700 dark:text-slate-200">Skill</a>
-                        <a href="#projects" class="py-1 text-slate-700 dark:text-slate-200">Project</a>
-                        <a href="#contact" class="py-1 text-slate-700 dark:text-slate-200">Kontak</a>
-                  </nav>
+                  <div id="mobileMenu" class="md:hidden hidden pb-3 grid grid-cols-2 gap-1.5">
+                        <a href="#about" class="tab">1:about</a>
+                        <a href="#skills" class="tab">2:skills</a>
+                        <a href="#devops" class="tab">3:devops</a>
+                        <a href="#projects" class="tab">4:projects</a>
+                        <a href="#console" class="tab">5:shell</a>
+                        <a href="#contact" class="tab">6:contact</a>
+                  </div>
             </div>
       </header>
 
-      <main>
-            <!-- Hero -->
-            <section id="hero" class="pt-16 sm:pt-20 pb-16">
-                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center">
-                        <div data-animate>
-                              <p class="text-sm font-semibold tracking-wide text-primary uppercase mb-3">Backend & Web
-                                    Developer</p>
-                              <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
-                                    Halo, saya <span class="text-primary">Raihan</span>.<br />
-                                    Saya membuat website dan API yang <span class="underline decoration-primary">cepat &
-                                          scalable</span>.
-                              </h1>
-                              <p class="text-slate-600 dark:text-slate-300 mb-6">
-                                    Pengalaman di <strong>Laravel</strong> dan <strong>Golang</strong> untuk membangun
-                                    aplikasi web, REST API, dan sistem backend yang rapi, mudah di-maintain, serta siap
-                                    produksi.
-                              </p>
-                              <div class="flex flex-wrap items-center gap-3 mb-6">
-                                    <a href="#projects"
-                                          class="inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary-dark text-white px-5 py-2.5 text-sm font-semibold shadow">
-                                          Lihat Project
-                                    </a>
-                                    <a href="#contact"
-                                          class="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-100 px-5 py-2.5 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800">
-                                          Kontak Saya
-                                    </a>
+      <main class="max-w-6xl mx-auto px-3 sm:px-5 py-6 space-y-6">
+
+            <!-- ============ HERO ============ -->
+            <section id="hero" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1 truncate">raihan@portfolio: ~</span>
+                        <span class="ml-auto hidden sm:inline">bash — 120x40</span>
+                  </div>
+
+                  <div class="win-body">
+                        <!-- Banner ASCII -->
+                        <pre class="ascii mb-1" aria-label="RAIHAN">██████╗  █████╗ ██╗██╗  ██╗ █████╗ ███╗   ██╗
+██╔══██╗██╔══██╗██║██║  ██║██╔══██╗████╗  ██║
+██████╔╝███████║██║███████║███████║██╔██╗ ██║
+██╔══██╗██╔══██║██║██╔══██║██╔══██║██║╚██╗██║
+██║  ██║██║  ██║██║██║  ██║██║  ██║██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝</pre>
+                        <p class="text-[11px] mb-6" style="color:var(--dim)">
+                              Backend &amp; DevOps Engineer &nbsp;·&nbsp; Laravel · Golang · Docker · CI/CD
+                        </p>
+
+                        <!-- Boot log -->
+                        <div id="bootLog" class="out mb-6 space-y-0.5 min-h-[92px]"></div>
+
+                        <div class="grid lg:grid-cols-[1.1fr_1fr] gap-6 items-start">
+
+                              <!-- Kolom kiri: whoami -->
+                              <div>
+                                    <p class="prompt mb-2">
+                                          <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~</span><span class="p-sign">$</span>
+                                          <span class="p-cmd">cat whoami.txt</span>
+                                    </p>
+                                    <p class="out mb-5">
+                                          Saya merancang REST API dan microservice dengan
+                                          <span class="ok">Laravel</span> &amp; <span class="ok">Golang</span>,
+                                          lalu mengemasnya dengan <span class="info">Docker</span> dan pipeline deployment
+                                          supaya rilis ke produksi jadi rutinitas yang membosankan — dalam artian yang baik.
+                                    </p>
+
+                                    <p class="prompt mb-2">
+                                          <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~</span><span class="p-sign">$</span>
+                                          <span class="p-cmd">systemctl status raihan</span>
+                                    </p>
+                                    <div class="out mb-6 space-y-0.5">
+                                          <p><span class="ok">●</span> raihan.service — Backend &amp; DevOps Engineer</p>
+                                          <p class="pl-4"><span class="dim">Active:</span> <span class="ok">active (running)</span> <span class="dim">· open to work · available for freelance</span></p>
+                                          <p class="pl-4"><span class="dim">Loc:</span> Indonesia <span class="dim">·</span> remote friendly</p>
+                                          <p class="pl-4"><span class="dim">Lang:</span> Indonesia, English</p>
+                                    </div>
+
+                                    <div class="flex flex-wrap gap-2.5 mb-6">
+                                          <a href="#projects" class="btn btn-primary">./lihat-project.sh</a>
+                                          <a href="#contact" class="btn">./kontak.sh</a>
+                                          <a href="https://github.com/raihanpcr" target="_blank" rel="noopener" class="btn">git remote -v</a>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 gap-2">
+                                          <div class="box px-3 py-2.5">
+                                                <p class="text-[19px] font-bold" style="color:var(--green)"><span class="counter" data-to="3">0</span>+</p>
+                                                <p class="text-[10px] mt-0.5" style="color:var(--dim)">tahun ngoding</p>
+                                          </div>
+                                          <div class="box px-3 py-2.5">
+                                                <p class="text-[19px] font-bold" style="color:var(--cyan)"><span class="counter" data-to="9">0</span></p>
+                                                <p class="text-[10px] mt-0.5" style="color:var(--dim)">project rilis</p>
+                                          </div>
+                                          <div class="box px-3 py-2.5">
+                                                <p class="text-[19px] font-bold" style="color:var(--amber)"><span class="counter" data-to="2">0</span></p>
+                                                <p class="text-[10px] mt-0.5" style="color:var(--dim)">bahasa utama</p>
+                                          </div>
+                                    </div>
                               </div>
-                              <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-                                    <div class="flex items-center gap-2">
-                                          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                          Open To Work
+
+                              <!-- Kolom kanan: topologi 3D -->
+                              <div>
+                                    <p class="prompt mb-2">
+                                          <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~</span><span class="p-sign">$</span>
+                                          <span class="p-cmd">kubectl get pods</span> <span class="p-flag">--watch</span>
+                                    </p>
+
+                                    <div class="box overflow-hidden">
+                                          <div class="flex items-center justify-between px-3 py-1.5 border-b" style="border-color:var(--border)">
+                                                <span class="text-[10px]" style="color:var(--dim)">cluster-topology.live</span>
+                                                <span class="text-[10px]" style="color:var(--green)">● healthy</span>
+                                          </div>
+
+                                          <div id="hero3dWrap" class="relative h-[260px] sm:h-[300px]">
+                                                <canvas id="hero3d"></canvas>
+                                                <div id="hero3dFallback" class="hidden absolute inset-0 flex items-center justify-center">
+                                                      <div class="orb-fallback"></div>
+                                                </div>
+                                          </div>
+
+                                          <div class="px-3 py-2.5 border-t text-[10.5px] space-y-1" style="border-color:var(--border)">
+                                                <div class="flex justify-between"><span style="color:var(--dim)">api-gateway</span><span class="ok">Running 1/1</span></div>
+                                                <div class="flex justify-between"><span style="color:var(--dim)">auth-svc</span><span class="ok">Running 1/1</span></div>
+                                                <div class="flex justify-between"><span style="color:var(--dim)">payment-svc</span><span class="ok">Running 1/1</span></div>
+                                          </div>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                          Available for freelance
+
+                                    <p class="text-[10px] mt-2" style="color:var(--dim)">
+                                          // gerakkan kursor di atas diagram untuk memutar
+                                    </p>
+                              </div>
+                        </div>
+                  </div>
+            </section>
+
+            <!-- ============ MARQUEE STACK ============ -->
+            <section class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">docker ps --format "table {{.Names}}\t{{.Status}}"</span>
+                  </div>
+                  <div class="marquee overflow-hidden py-3">
+                        <div class="marquee-track" id="techTrack"></div>
+                  </div>
+            </section>
+
+            <!-- ============ ABOUT ============ -->
+            <section id="about" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">~/about</span>
+                  </div>
+                  <div class="win-body">
+                        <p class="prompt mb-4">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/about</span><span class="p-sign">$</span>
+                              <span class="p-cmd">cat README.md</span>
+                        </p>
+
+                        <div class="grid lg:grid-cols-[260px_1fr] gap-6">
+                              <div class="box p-4">
+                                    <div class="glitch-img mb-2">
+                                          <img src="assets/_MG_9562_.jpg" alt="Foto Raihan Alrasyid" />
+                                          <span class="gi-layer gi-slice" style="background-image:url('assets/_MG_9562_.jpg')"></span>
+                                          <span class="gi-layer gi-r" style="background-image:url('assets/_MG_9562_.jpg')"></span>
+                                          <span class="gi-layer gi-c" style="background-image:url('assets/_MG_9562_.jpg')"></span>
+                                          <span class="gi-noise"></span>
+                                          <span class="gi-scan"></span>
+                                          <span class="gi-roll"></span>
+                                          <span class="gi-tag">SIGNAL LOST</span>
                                     </div>
-                                    <div class="flex flex-wrap gap-2">
-                                          <span
-                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Laravel</span>
-                                          <span
-                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Golang</span>
-                                          <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">REST
-                                                API</span>
-                                          <span
-                                                class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Tailwind</span>
+                                    <p class="text-[10px] mb-3" style="color:var(--dim)">
+                                          <span style="color:var(--red)">cam0</span> stream corrupted — 640x480 @ 12fps
+                                    </p>
+                                    <p class="text-[13px] font-semibold" style="color:var(--green)">Raihan Alrasyid</p>
+                                    <p class="text-[11px] mt-0.5" style="color:var(--dim)">Backend &amp; DevOps Engineer</p>
+                                    <div class="mt-3 pt-3 border-t space-y-1 text-[11px]" style="border-color:var(--border)">
+                                          <p><span style="color:var(--dim)">location </span><span class="info">Indonesia</span></p>
+                                          <p><span style="color:var(--dim)">status   </span><span class="ok">open to work</span></p>
+                                          <p><span style="color:var(--dim)">shell    </span><span class="mag">bash / zsh</span></p>
+                                    </div>
+                              </div>
+
+                              <div class="out space-y-4">
+                                    <p>
+                                          <span class="mag"># Dari baris kode sampai server produksi</span>
+                                    </p>
+                                    <p>
+                                          Saya developer backend yang tidak berhenti di <span class="info">merge to main</span>.
+                                          Buat saya sebuah fitur baru selesai kalau sudah ter-deploy, terpantau, dan gampang di-rollback.
+                                    </p>
+                                    <p>
+                                          Saya terbiasa bekerja dengan <span class="ok">Laravel</span> dan <span class="ok">Golang</span>,
+                                          mengutamakan struktur kode yang bersih, mudah di-maintain, dan scalable. Saya nyaman dengan
+                                          pattern seperti <span class="info">service-repository</span> dan microservices.
+                                    </p>
+                                    <p>
+                                          Di sisi operasional, saya mengemas aplikasi dengan Docker, menyiapkan pipeline CI/CD, dan
+                                          mengurus deployment di server Linux. Di luar itu, saya sering membantu UMKM dan bisnis kecil
+                                          go-digital: dari website sederhana sampai dashboard admin untuk operasional harian.
+                                    </p>
+
+                                    <div class="pt-2">
+                                          <p class="prompt mb-2">
+                                                <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/about</span><span class="p-sign">$</span>
+                                                <span class="p-cmd">uname -a</span>
+                                          </p>
+                                          <div class="box p-3 text-[11.5px] space-y-1">
+                                                <p><span style="color:var(--dim)">role   </span> Backend &amp; DevOps Engineer</p>
+                                                <p><span style="color:var(--dim)">focus  </span> REST API · Microservice · Deployment</p>
+                                                <p><span style="color:var(--dim)">stack  </span> Laravel · Golang · PostgreSQL · Docker</p>
+                                                <p><span style="color:var(--dim)">mode   </span> Freelance &amp; open to work</p>
+                                          </div>
                                     </div>
                               </div>
                         </div>
+                  </div>
+            </section>
 
-                        <!-- Hero Card -->
-                        <div class="relative" data-animate>
-                              <div
-                                    class="absolute inset-0 -z-10 blur-3xl opacity-40 bg-gradient-to-tr from-primary/40 via-purple-400/30 to-sky-400/30 dark:opacity-60">
+            <!-- ============ SKILLS ============ -->
+            <section id="skills" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">~/skills</span>
+                  </div>
+                  <div class="win-body">
+                        <p class="prompt mb-4">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/skills</span><span class="p-sign">$</span>
+                              <span class="p-cmd">tree</span> <span class="p-flag">-L 2</span>
+                        </p>
+                        <div id="skillTree" class="grid md:grid-cols-2 gap-x-8 gap-y-5 out"></div>
+                  </div>
+            </section>
+
+            <!-- ============ DEVOPS ============ -->
+            <section id="devops" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">~/.github/workflows</span>
+                  </div>
+                  <div class="win-body">
+                        <p class="prompt mb-1">
+                              <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/.github/workflows</span><span class="p-sign">$</span>
+                              <span class="p-cmd">gh run watch</span>
+                        </p>
+                        <p class="out mb-5" style="color:var(--dim)">
+                              // alur kerja yang saya pakai supaya rilis bisa sering, kecil, dan aman untuk di-rollback
+                        </p>
+
+                        <div id="pipeline" class="space-y-1.5 out"></div>
+
+                        <div class="grid sm:grid-cols-3 gap-3 mt-6 pt-5 border-t" style="border-color:var(--border)">
+                              <div class="box p-3">
+                                    <p class="text-[12px] font-semibold"><span class="ok">▪</span> Containerized</p>
+                                    <p class="text-[11px] mt-1" style="color:var(--dim)">Satu Dockerfile, jalan sama di laptop dan server.</p>
                               </div>
-                              <div
-                                    class="relative rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-xl p-6 sm:p-8">
-                                    <div class="flex items-center gap-4 mb-6">
+                              <div class="box p-3">
+                                    <p class="text-[12px] font-semibold"><span class="info">▪</span> Automated</p>
+                                    <p class="text-[11px] mt-1" style="color:var(--dim)">Push ke main memicu build, test, lalu deploy.</p>
+                              </div>
+                              <div class="box p-3">
+                                    <p class="text-[12px] font-semibold"><span class="warn">▪</span> Observable</p>
+                                    <p class="text-[11px] mt-1" style="color:var(--dim)">Log dan health check supaya masalah ketahuan duluan.</p>
+                              </div>
+                        </div>
+                  </div>
+            </section>
 
-                                          <img src="assets/_MG_9562_.jpg" alt=""
-                                                class="w-20 h-25 rounded-2xl bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
+            <!-- ============ PROJECTS ============ -->
+            <section id="projects" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">~/projects</span>
+                  </div>
+                  <div class="win-body">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                              <p class="prompt">
+                                    <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/projects</span><span class="p-sign">$</span>
+                                    <span class="p-cmd">ls</span> <span class="p-flag">-la</span> <span class="dim">|</span> <span class="p-cmd">grep</span>
+                                    <span id="grepArg" class="p-flag">--all</span>
+                              </p>
+                              <div class="flex flex-wrap gap-1.5">
+                                    <button class="tab project-filter active" data-filter="all">all</button>
+                                    <button class="tab project-filter" data-filter="web">web</button>
+                                    <button class="tab project-filter" data-filter="api">api</button>
+                                    <button class="tab project-filter" data-filter="dashboard">dashboard</button>
+                              </div>
+                        </div>
+
+                        <p class="out mb-3" style="color:var(--dim)">total <span id="projectCount">9</span></p>
+                        <div id="projectGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                  </div>
+            </section>
+
+            <!-- ============ KONSOL INTERAKTIF ============ -->
+            <section id="console" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">bash — interactive</span>
+                        <span class="ml-auto hidden sm:inline">ketik 'help'</span>
+                  </div>
+                  <div class="win-body" style="padding-top:16px">
+                        <div id="consoleLog" class="out space-y-0.5 mb-2"></div>
+                        <div class="flex items-center gap-2 pt-2 border-t" style="border-color:var(--border)">
+                              <span class="prompt shrink-0">
+                                    <span class="p-user">visitor@raihan</span><span class="dim">:</span><span class="p-path">~</span><span class="p-sign">$</span>
+                              </span>
+                              <input id="consoleInput" autocomplete="off" autocapitalize="off" spellcheck="false"
+                                    aria-label="Terminal interaktif" placeholder="help" />
+                        </div>
+                  </div>
+            </section>
+
+            <!-- ============ CONTACT ============ -->
+            <section id="contact" class="win" data-animate>
+                  <div class="win-bar">
+                        <span class="dot" style="background:var(--red)"></span>
+                        <span class="dot" style="background:var(--amber)"></span>
+                        <span class="dot" style="background:var(--green)"></span>
+                        <span class="ml-1">~/contact</span>
+                  </div>
+                  <div class="win-body">
+                        <div class="grid lg:grid-cols-2 gap-8">
+                              <div>
+                                    <p class="prompt mb-3">
+                                          <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/contact</span><span class="p-sign">$</span>
+                                          <span class="p-cmd">cat kontak.txt</span>
+                                    </p>
+                                    <p class="out mb-5">
+                                          Punya ide website, sistem internal, atau ingin upgrade proses bisnis dengan aplikasi custom?
+                                          Kirim pesan, saya bantu mapping kebutuhan dan perkiraan biayanya.
+                                    </p>
+
+                                    <div class="out space-y-1 mb-6">
+                                          <p><span class="ok">[✓]</span> Bisa mulai dari project kecil</p>
+                                          <p><span class="ok">[✓]</span> Support after-delivery</p>
+                                          <p><span class="ok">[✓]</span> Dokumentasi basic untuk tim internal</p>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                          <a href="mailto:raihanalrasyid20@gmail.com" class="box box-hover p-3 flex items-center gap-3">
+                                                <span class="text-[11px] w-16 shrink-0" style="color:var(--dim)">email</span>
+                                                <span class="text-[12px] truncate">raihanalrasyid20@gmail.com</span>
+                                          </a>
+                                          <a href="https://wa.me/6282119978945" target="_blank" rel="noopener" class="box box-hover p-3 flex items-center gap-3">
+                                                <span class="text-[11px] w-16 shrink-0" style="color:var(--dim)">whatsapp</span>
+                                                <span class="text-[12px]">+62 821 1997 8945</span>
+                                          </a>
+                                          <a href="https://github.com/raihanpcr" target="_blank" rel="noopener" class="box box-hover p-3 flex items-center gap-3">
+                                                <span class="text-[11px] w-16 shrink-0" style="color:var(--dim)">github</span>
+                                                <span class="text-[12px]">github.com/raihanpcr</span>
+                                          </a>
+                                    </div>
+                              </div>
+
+                              <div>
+                                    <p class="prompt mb-3">
+                                          <span class="p-user">raihan@portfolio</span><span class="dim">:</span><span class="p-path">~/contact</span><span class="p-sign">$</span>
+                                          <span class="p-cmd">./kirim-pesan.sh</span>
+                                    </p>
+
+                                    <form class="box p-4 space-y-3.5" onsubmit="return sendWhatsApp(event)">
                                           <div>
-                                                <h2 class="font-semibold text-lg">Raihan Alrasyid</h2>
-                                                <p class="text-xs text-slate-500 dark:text-slate-400">Laravel & Golang
-                                                      Developer</p>
+                                                <label for="name" class="block text-[11px] mb-1.5"><span class="p-sign">?</span> <span style="color:var(--dim)">nama</span></label>
+                                                <input type="text" id="name" required class="field" placeholder="nama lengkap" />
                                           </div>
-                                    </div>
-                                    <dl class="grid grid-cols-2 gap-4 text-xs">
-                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3">
-                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Pengalaman</dt>
-                                                <dd class="text-sm font-semibold">3+ tahun</dd>
+                                          <div>
+                                                <label for="emailwa" class="block text-[11px] mb-1.5"><span class="p-sign">?</span> <span style="color:var(--dim)">email / whatsapp</span></label>
+                                                <input type="text" id="emailwa" required class="field" placeholder="email atau nomor WA" />
                                           </div>
-                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3">
-                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Fokus</dt>
-                                                <dd class="text-sm font-semibold">Backend & API</dd>
+                                          <div>
+                                                <label for="project" class="block text-[11px] mb-1.5"><span class="p-sign">?</span> <span style="color:var(--dim)">jenis project</span></label>
+                                                <select id="project" class="field">
+                                                      <option>Website Company Profile</option>
+                                                      <option>Landing Page</option>
+                                                      <option>Sistem Internal / Dashboard</option>
+                                                      <option>REST API / Microservice</option>
+                                                      <option>Integrasi Pembayaran</option>
+                                                      <option>Setup Deployment / CI-CD</option>
+                                                </select>
                                           </div>
-                                          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3 col-span-2">
-                                                <dt class="text-slate-500 dark:text-slate-400 mb-1">Stack Utama</dt>
-                                                <dd class="text-sm font-semibold">Laravel, Golang, PostgreSQL, MySQL,
-                                                      Docker</dd>
+                                          <div>
+                                                <label for="description" class="block text-[11px] mb-1.5"><span class="p-sign">?</span> <span style="color:var(--dim)">deskripsi singkat</span></label>
+                                                <textarea rows="4" id="description" class="field resize-none" placeholder="ceritakan singkat kebutuhan project kamu..."></textarea>
                                           </div>
-                                    </dl>
+                                          <button type="submit" class="btn btn-primary w-full justify-center">
+                                                $ send --via whatsapp
+                                          </button>
+                                          <p class="text-[10.5px] text-center" style="color:var(--dim)">
+                                                Pesan akan terbuka di WhatsApp, tinggal tekan kirim.
+                                          </p>
+                                    </form>
                               </div>
                         </div>
                   </div>
             </section>
 
-            <!-- About -->
-            <section id="about" class="py-12 border-t border-slate-200 dark:border-slate-800">
-                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10 items-start">
-                        <div data-animate>
-                              <h2 class="text-xl sm:text-2xl font-bold mb-3">Tentang Saya</h2>
-                              <p class="text-slate-600 dark:text-slate-300 text-sm">
-                                    Saya adalah developer backend yang fokus membangun solusi web untuk bisnis:
-                                    mulai dari company profile, sistem internal, hingga integrasi pembayaran dan API.
-                              </p>
-                        </div>
-                        <div class="md:col-span-2 space-y-4 text-sm text-slate-600 dark:text-slate-300" data-animate>
-                              <p>
-                                    Saya terbiasa bekerja dengan Laravel dan Golang, mengutamakan struktur kode
-                                    yang bersih, mudah di-maintain, dan scalable. Saya juga nyaman bekerja dengan
-                                    pattern seperti service-repository, dan microservices.
-                              </p>
-                              <p>
-                                    Di luar itu, saya sering membantu UMKM dan bisnis kecil untuk go-digital:
-                                    mulai dari pembuatan website sederhana sampai dashboard admin untuk operasional.
-                              </p>
-                              <dl class="grid sm:grid-cols-3 gap-3 text-xs">
-                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
-                                          <dt class="text-slate-500 dark:text-slate-400">Lokasi</dt>
-                                          <dd class="font-semibold">Indonesia (Remote friendly)</dd>
-                                    </div>
-                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
-                                          <dt class="text-slate-500 dark:text-slate-400">Status</dt>
-                                          <dd class="font-semibold">Freelance & Open to work</dd>
-                                    </div>
-                                    <div class="rounded-2xl bg-slate-100 dark:bg-slate-800 px-4 py-3">
-                                          <dt class="text-slate-500 dark:text-slate-400">Bahasa</dt>
-                                          <dd class="font-semibold">Indonesia, English (basic)</dd>
-                                    </div>
-                              </dl>
-                        </div>
-                  </div>
-            </section>
-
-            <!-- Skills -->
-            <section id="skills" class="py-14">
-                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex items-end justify-between gap-4 mb-8">
-                              <div data-animate>
-                                    <h2 class="text-xl sm:text-2xl font-bold mb-2">Skill & Tools</h2>
-                                    <p class="text-sm text-slate-600 dark:text-slate-300">
-                                          Beberapa teknologi yang sering saya gunakan dalam project sehari-hari.
-                                    </p>
-                              </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-6">
-                              <!-- Backend -->
-                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
-                                    data-animate>
-                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
-                                          <span class="text-lg">🧠</span> Backend
-                                    </h3>
-                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                                          <li>Laravel (API, Fullstack)</li>
-                                          <li>Golang (Echo, Gin, REST API)</li>
-                                          <li>JWT, OAuth, Social Login</li>
-                                          <li>Microservices & Clean Architecture (basic)</li>
-                                    </ul>
-                              </div>
-
-                              <!-- Database -->
-                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
-                                    data-animate>
-                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
-                                          <span class="text-lg">🗄️</span> Database & Infra
-                                    </h3>
-                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                                          <li>PostgreSQL, MySQL</li>
-                                          <li>MongoDB</li>
-                                          <li>Docker, docker-compose (basic)</li>
-                                    </ul>
-                              </div>
-
-                              <!-- Frontend -->
-                              <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
-                                    data-animate>
-                                    <h3 class="font-semibold mb-3 flex items-center gap-2">
-                                          <span class="text-lg">🎨</span> Frontend
-                                    </h3>
-                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                                          <li>HTML, CSS, JavaScript</li>
-                                          <li>Bootstrap, Tailwind CSS </li>
-                                          <li>Livewire</li>
-                                          <li>Basic frontend interactivity</li>
-                                    </ul>
-                              </div>
-                        </div>
-                  </div>
-            </section>
-
-            <!-- Projects -->
-            <section id="projects" class="py-14 border-t border-slate-200 dark:border-slate-800">
-                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-                              <div data-animate>
-                                    <h2 class="text-xl sm:text-2xl font-bold mb-2">Project Terpilih</h2>
-                                    <p class="text-sm text-slate-600 dark:text-slate-300">
-                                          Beberapa contoh project yang merepresentasikan kemampuan saya.
-                                    </p>
-                              </div>
-
-                              <!-- Filter -->
-                              <div class="flex flex-wrap gap-2 text-xs" data-animate>
-                                    <button
-                                          class="project-filter px-3 py-1.5 rounded-full border border-primary bg-primary text-white font-medium"
-                                          data-filter="all">
-                                          Semua
-                                    </button>
-                                    <button
-                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
-                                          data-filter="web">
-                                          Web App
-                                    </button>
-                                    <button
-                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
-                                          data-filter="api">
-                                          API
-                                    </button>
-                                    <button
-                                          class="project-filter px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100"
-                                          data-filter="dashboard">
-                                          Dashboard
-                                    </button>
-                              </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-6">
-                              <!-- Project 1 -->
-                              <article class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 
-                                          bg-white dark:bg-slate-900 overflow-hidden flex flex-col
-                                          hover:shadow-lg transition" data-category="api" data-animate>
-
-                                    <!-- IMAGE / THUMBNAIL -->
-                                    <div class="relative h-44">
-                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div class="absolute inset-0 bg-gradient-to-tr 
-                                                from-black/70 via-black/40 to-black/10"></div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Sistem Rental Buku
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      Golang · MySQL
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Built a command-line interface (CLI) application for an e-commerce game
-                                                platform during the Hacktiv8 backend learning phase. Implemented core
-                                                features such as product listing, user transactions, and order history.
-                                                Focused on code structure, data persistence, and business logic.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl class="grid grid-cols-2 gap-3 text-[11px] mb-4
-                                                text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Backend Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Auth, CRUD, Payment
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      CLI
-                                                </span>
-
-                                                <div class="flex gap-3">
-                                                      <a href="https://github.com/raihanpcr/e-commerce-games"
-                                                            target="_blank"
-                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
-                                                            GitHub
-                                                      </a>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 2 -->
-                              <article class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 
-                                                                        bg-white dark:bg-slate-900 overflow-hidden flex flex-col
-                                                                        hover:shadow-lg transition" data-category="api"
-                                    data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div class="absolute inset-0 bg-gradient-to-tr 
-                                                                              from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Pojok Baca API
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      Echo · PostgreSQL · Midtrans
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Developed a RESTful API platform for book purchases using a monolithic
-                                                architecture, focusing on forEach code structure, modularity, and
-                                                transactional reliability. Integrated key features such as user
-                                                authentication and authorization, book catalog management, order
-                                                processing, payment via Midtrans
-                                                Snap API.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl class="grid grid-cols-2 gap-3 text-[11px] mb-4
-                                                                              text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Backend Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Auth, CRUD, Payment
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      API
-                                                </span>
-
-                                                <div class="flex gap-3">
-                                                      <a href="https://github.com/raihanpcr/pojok-baca-api"
-                                                            target="_blank"
-                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
-                                                            GitHub
-                                                      </a>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 3 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="api" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Booktopia
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      Golang · PostgreSQL · Microservice
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Built a modern e-commerce platform for book purchases using microservice
-                                                architecture with Golang.
-                                                Designed for scalability, modularity, and ease of development. Implement
-                                                independent services for
-                                                Authentication, transaction, wallet, book service, gifting service. All
-                                                services are seamlessly
-                                                integrated via an API Gateway to ensure clean communication and
-                                                maintainability.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4
-                                                                                                            text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Backend Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Auth, CRUD, Payment
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      API
-                                                </span>
-
-                                                <div class="flex gap-3">
-                                                      <a href="https://github.com/raihanpcr/pojok-baca-api"
-                                                            target="_blank"
-                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
-                                                            GitHub
-                                                      </a>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 4 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="web" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_jokihan.PNG" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Jokihan
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      PHP · Bootstrap · MySQL
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Built a web-based application that offers website creation services,
-                                                allowing users to submit project
-                                                requests and manage service interactions. Focused on frontend
-                                                development, user input handling, and
-                                                backend integration for data management
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Landing Page, CRUD, Auth
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-
-                                                <div class="flex gap-3">
-                                                      <a href="https://jokihan.netlify.app/" target="_blank"
-                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
-                                                            Demo
-                                                      </a>
-                                                      <a href="https://github.com/raihanpcr/jokihan" target="_blank"
-                                                            class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
-                                                            GitHub
-                                                      </a>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 5 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="dashboard" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Dasboard SUMU
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      Laravel · Tailwind · Midtrans
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Developed a real-time, web-based dashboard system for Serikat Usaha
-                                                Muhammadiyah (SUMU) to
-                                                display business data and analytics. Integrated Midtrans for payment
-                                                processing and WhatsApp API
-                                                for notifications.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            CRUD, Auth, Payment, Whatsapp Verification
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 6 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="web dashboard" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_biogas.PNG" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      PTBg & PLTBg
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      CodeIgniter3 · Bootstrap · MySQL
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Developed a web-based monitoring system to track operational data and
-                                                performance metrics of
-                                                PTBg and PLTBg (Biogas and Biomass Power Plants). Focused on real-time
-                                                data visualization, admin
-                                                control, and reporting.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Admin Control, CRUD, Auth
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 7 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="web dashboard" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_dddtlh.PNG" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Web GIS DDDTLH
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      CodeIgniter3 · MySQL · ArcMap
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Developed a Geographic Information System (GIS) application to visualize
-                                                real-time data on Daya Dukung dan Daya Tampung Lingkungan Hidup
-                                                (DDDTLH). Designed to support
-                                                spatial analysis and environmental decision-making through interactive
-                                                maps and live data
-                                                rendering.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            GIS, CRUD, Auth
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 8 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="web dashboard" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_simoga.PNG" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      SIMOGA
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      CodeIgniter3 · Bootstrap · MySQL
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Implemented a monitoring system to track Fresh Fruit Bunch (TBS)
-                                                harvesting and delivery metrics.
-                                                Visualized productivity data to help improve supply chain transparency
-                                                and efficiency.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Admin Dashboard, Monitoring
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-                                          </div>
-                                    </div>
-                              </article>
-
-                              <!-- Project 9 -->
-                              <article
-                                    class="project-card rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col hover:shadow-lg transition"
-                                    data-category="web dashboard" data-animate>
-                                    <div class="relative h-44">
-                                          <img src="assets/img_project.png" alt="Sistem Rental Buku"
-                                                class="w-full h-full object-cover">
-
-                                          <!-- overlay -->
-                                          <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-black/10">
-                                          </div>
-
-                                          <div
-                                                class="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                                                <h3 class="text-sm font-semibold text-white">
-                                                      Warehouse Management
-                                                </h3>
-                                                <span class="text-[10px] px-2 py-1 rounded-full bg-black/50 text-white">
-                                                      CodeIgniter3 · Bootstrap · MySQL
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="p-4 flex-1 flex flex-col">
-                                          <p class="text-xs text-slate-600 dark:text-slate-300 mb-4">
-                                                Developed a web-based dashboard to monitor warehouse inventory levels
-                                                and stock movements in
-                                                real time. Enabled visual reporting and analytics to support operational
-                                                decision-making.
-                                          </p>
-
-                                          <!-- META -->
-                                          <dl
-                                                class="grid grid-cols-2 gap-3 text-[11px] mb-4 text-slate-500 dark:text-slate-400">
-                                                <div>
-                                                      <dt>Peran</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Fullstack Developer
-                                                      </dd>
-                                                </div>
-                                                <div>
-                                                      <dt>Fitur</dt>
-                                                      <dd class="font-medium text-slate-700 dark:text-slate-200">
-                                                            Admin Control, CRUD, Auth
-                                                      </dd>
-                                                </div>
-                                          </dl>
-
-                                          <!-- FOOTER / LINKS -->
-                                          <div class="mt-auto flex items-center justify-between text-[11px]">
-                                                <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800">
-                                                      Web App
-                                                </span>
-                                          </div>
-                                    </div>
-                              </article>
-                        </div>
-                  </div>
-            </section>
-
-            <!-- Contact -->
-            <section id="contact" class="py-14">
-                  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-start">
-                        <div data-animate>
-                              <h2 class="text-xl sm:text-2xl font-bold mb-3">Ayo Diskusi Project</h2>
-                              <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                                    Punya ide website, sistem internal, atau ingin upgrade proses bisnis dengan aplikasi
-                                    custom?
-                                    Kirim pesan, saya akan bantu mapping kebutuhan dan perkiraan biayanya.
-                              </p>
-                              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                                    <li>✅ Bisa mulai dari project kecil</li>
-                                    <li>✅ Support after-delivery</li>
-                                    <li>✅ Dokumentasi basic untuk tim internal</li>
-                              </ul>
-
-                              <div class="mt-6 space-y-2 text-sm">
-                                    <p><strong>Email:</strong> raihanalrasyid20@gmail.com</p>
-                                    <p><strong>WhatsApp:</strong> +62 821 1997 8945</p>
-                                    <p><strong>GitHub:</strong> github.com/raihanpcr</p>
-                              </div>
-                        </div>
-
-                        <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
-                              data-animate>
-                              <form class="space-y-4 text-sm">
-                                    <div>
-                                          <label
-                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Nama</label>
-                                          <input type="text" id="name"
-                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
-                                                placeholder="Nama lengkap" />
-                                    </div>
-                                    <div>
-                                          <label
-                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Email
-                                                / WhatsApp</label>
-                                          <input type="text" id="emailwa"
-                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
-                                                placeholder="Email atau nomor WA" />
-                                    </div>
-                                    <div>
-                                          <label
-                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Jenis
-                                                Project</label>
-                                          <select id="project"
-                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70">
-                                                <option value="Website Company Profile">Website Company Profile</option>
-                                                <option value="Landing Page">Landing Page</option>
-                                                <option value="Sistem Internal / Dashboard">Sistem Internal / Dashboard
-                                                </option>
-                                                <option value="REST API / Microservice">REST API / Microservice</option>
-                                                <option value="Integrasi Pembayaran">Integrasi Pembayaran</option>
-                                          </select>
-                                    </div>
-                                    <div>
-                                          <label
-                                                class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">Deskripsi
-                                                Singkat</label>
-                                          <textarea rows="4" id="description"
-                                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/70"
-                                                placeholder="Ceritakan singkat kebutuhan project kamu..."></textarea>
-                                    </div>
-                                    <button type="button" onclick="sendWhatsApp()"
-                                          class="w-full rounded-xl bg-primary hover:bg-primary-dark text-white py-2.5 font-semibold">
-                                          Kirim
-                                    </button>
-                              </form>
-                        </div>
-                  </div>
-            </section>
+            <!-- ============ FOOTER ============ -->
+            <footer class="out text-center py-6" style="color:var(--dim)">
+                  <p class="text-[11px]">
+                        <span class="p-sign">$</span> exit &nbsp;·&nbsp; © <span id="year"></span> Raihan Alrasyid
+                  </p>
+                  <p class="text-[11px] mt-1">built with tailwind · three.js · ☕</p>
+            </footer>
       </main>
 
-      <!-- Footer -->
-      <footer class="border-t border-slate-200 dark:border-slate-800 py-6">
-            <div
-                  class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
-                  <p>© <span id="year"></span> Raihan. All rights reserved.</p>
-                  <p>Built with Laravel, Golang & Tailwind.</p>
-            </div>
-      </footer>
+      <!-- ============ STATUS BAR ============ -->
+      <div class="statusbar">
+            <div class="sb-seg sb-accent">NORMAL</div>
+            <div class="sb-seg hidden sm:flex"><span>raihan@portfolio</span></div>
+            <div class="sb-seg" style="color:var(--cyan)"><span id="sbPath">~</span></div>
+            <div class="sb-seg hidden md:flex"><span style="color:var(--magenta)">⎇ main*</span></div>
+            <div class="ml-auto sb-seg hidden sm:flex"><span id="sbClock">--:--:--</span></div>
+            <div class="sb-seg" style="border-left:1px solid var(--border)"><span id="sbScroll">0%</span></div>
+      </div>
 
-      <!-- Simple JS -->
+      <!-- Tombol darurat (bercanda). Tetap anchor biasa supaya tanpa JS pun jalan. -->
+      <a href="500.html?from=panic" id="panicBtn" class="panic" title="Serius, jangan dipencet.">
+            <span class="panic-top"></span>
+            <span class="panic-body">
+                  <span class="panic-dome"></span>
+                  <span class="panic-label">
+                        <b>JANGAN DIPENCET</b>
+                        <span>emergency · break glass</span>
+                  </span>
+            </span>
+      </a>
+
+      <button id="toTop" aria-label="Kembali ke atas"
+            class="fixed bottom-10 right-4 z-40 tab hidden sm:block opacity-0 pointer-events-none transition">
+            [top]
+      </button>
+
       <script>
-            // Tahun otomatis
+            /* =========================================================
+               DATA
+               ========================================================= */
+            const PROJECTS = [
+                  {
+                        name: 'booktopia', title: 'Booktopia', stack: 'Golang · PostgreSQL · Microservice',
+                        badge: 'microservice', cat: 'api', img: 'assets/img_project.png',
+                        role: 'Backend Developer', feature: 'Auth, Wallet, Gifting, Gateway', size: '12.4K',
+                        desc: 'Platform e-commerce buku dengan arsitektur microservice di Golang. Service auth, transaksi, wallet, book, dan gifting berjalan independen dan disatukan lewat API Gateway.',
+                        links: [{ label: 'github', url: 'https://github.com/raihanpcr/pojok-baca-api' }], featured: true
+                  },
+                  {
+                        name: 'pojok-baca-api', title: 'Pojok Baca API', stack: 'Echo · PostgreSQL · Midtrans',
+                        badge: 'rest-api', cat: 'api', img: 'assets/img_project.png',
+                        role: 'Backend Developer', feature: 'Auth, CRUD, Payment', size: '8.1K',
+                        desc: 'RESTful API untuk pembelian buku dengan arsitektur monolitik yang modular: autentikasi & otorisasi, manajemen katalog, order, sampai pembayaran lewat Midtrans Snap API.',
+                        links: [{ label: 'github', url: 'https://github.com/raihanpcr/pojok-baca-api' }]
+                  },
+                  {
+                        name: 'e-commerce-games', title: 'E-Commerce Games CLI', stack: 'Golang · MySQL',
+                        badge: 'cli', cat: 'api', img: 'assets/img_project.png',
+                        role: 'Backend Developer', feature: 'Product, Transaction, History', size: '4.7K',
+                        desc: 'Aplikasi command-line untuk platform e-commerce game, dibuat saat fase belajar backend di Hacktiv8. Fokus pada struktur kode, persistensi data, dan business logic.',
+                        links: [{ label: 'github', url: 'https://github.com/raihanpcr/e-commerce-games' }]
+                  },
+                  {
+                        name: 'jokihan', title: 'Jokihan', stack: 'PHP · Bootstrap · MySQL',
+                        badge: 'web-app', cat: 'web', img: 'assets/img_jokihan.PNG',
+                        role: 'Fullstack Developer', feature: 'Landing Page, CRUD, Auth', size: '6.3K',
+                        desc: 'Aplikasi web penyedia jasa pembuatan website: user bisa mengirim request project dan mengelola interaksi layanan. Fokus pada frontend, input handling, dan integrasi backend.',
+                        links: [
+                              { label: 'demo', url: 'https://jokihan.netlify.app/' },
+                              { label: 'github', url: 'https://github.com/raihanpcr/jokihan' }
+                        ]
+                  },
+                  {
+                        name: 'dashboard-sumu', title: 'Dashboard SUMU', stack: 'Laravel · Tailwind · Midtrans',
+                        badge: 'dashboard', cat: 'dashboard web', img: 'assets/img_project.png',
+                        role: 'Fullstack Developer', feature: 'CRUD, Auth, Payment, WA Verification', size: '15.2K',
+                        desc: 'Dashboard real-time berbasis web untuk Serikat Usaha Muhammadiyah (SUMU) yang menampilkan data bisnis dan analitik. Terintegrasi Midtrans dan WhatsApp API untuk notifikasi.',
+                        links: []
+                  },
+                  {
+                        name: 'ptbg-pltbg', title: 'PTBg & PLTBg', stack: 'CodeIgniter 3 · Bootstrap · MySQL',
+                        badge: 'monitoring', cat: 'web dashboard', img: 'assets/img_biogas.PNG',
+                        role: 'Fullstack Developer', feature: 'Admin Control, CRUD, Auth', size: '9.8K',
+                        desc: 'Sistem monitoring berbasis web untuk melacak data operasional dan metrik performa pembangkit listrik biogas dan biomassa, dengan visualisasi real-time dan pelaporan.',
+                        links: []
+                  },
+                  {
+                        name: 'webgis-dddtlh', title: 'Web GIS DDDTLH', stack: 'CodeIgniter 3 · MySQL · ArcMap',
+                        badge: 'gis', cat: 'web dashboard', img: 'assets/img_dddtlh.PNG',
+                        role: 'Fullstack Developer', feature: 'GIS, CRUD, Auth', size: '11.5K',
+                        desc: 'Geographic Information System untuk memvisualisasikan data Daya Dukung dan Daya Tampung Lingkungan Hidup secara real-time, mendukung analisis spasial lewat peta interaktif.',
+                        links: []
+                  },
+                  {
+                        name: 'simoga', title: 'SIMOGA', stack: 'CodeIgniter 3 · Bootstrap · MySQL',
+                        badge: 'monitoring', cat: 'web dashboard', img: 'assets/img_simoga.PNG',
+                        role: 'Fullstack Developer', feature: 'Admin Dashboard, Monitoring', size: '7.9K',
+                        desc: 'Sistem monitoring panen dan pengiriman Tandan Buah Segar (TBS). Data produktivitas divisualisasikan untuk meningkatkan transparansi dan efisiensi rantai pasok.',
+                        links: []
+                  },
+                  {
+                        name: 'warehouse-mgmt', title: 'Warehouse Management', stack: 'CodeIgniter 3 · Bootstrap · MySQL',
+                        badge: 'dashboard', cat: 'web dashboard', img: 'assets/img_project.png',
+                        role: 'Fullstack Developer', feature: 'Admin Control, CRUD, Auth', size: '10.1K',
+                        desc: 'Dashboard berbasis web untuk memantau level inventori gudang dan pergerakan stok secara real-time, lengkap dengan pelaporan visual untuk keputusan operasional.',
+                        links: []
+                  }
+            ];
+
+            // TODO(raihan): sesuaikan daftar & angka level di bawah ini dengan kondisi aslinya.
+            const SKILLS = [
+                  {
+                        dir: 'backend', color: 'var(--green)', level: 85,
+                        items: ['Laravel (API, Fullstack)', 'Golang (Echo, Gin, REST API)', 'JWT, OAuth, Social Login', 'Microservices & Clean Architecture']
+                  },
+                  {
+                        dir: 'devops', color: 'var(--cyan)', level: 72,
+                        items: ['Docker & docker-compose', 'CI/CD (GitHub Actions)', 'Linux server & Nginx', 'Deployment VPS & monitoring']
+                  },
+                  {
+                        dir: 'database', color: 'var(--amber)', level: 78,
+                        items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Query & schema design']
+                  },
+                  {
+                        dir: 'frontend', color: 'var(--magenta)', level: 65,
+                        items: ['HTML, CSS, JavaScript', 'Bootstrap, Tailwind CSS', 'Livewire', 'Basic frontend interactivity']
+                  }
+            ];
+
+            const TECH = [
+                  'laravel', 'golang', 'php', 'postgresql', 'mysql', 'mongodb', 'docker', 'nginx',
+                  'linux', 'git', 'github-actions', 'tailwind', 'livewire', 'midtrans', 'rest-api', 'microservices'
+            ];
+
+            const PIPELINE = [
+                  { job: 'checkout', desc: 'git clone + checkout branch', time: '3s' },
+                  { job: 'build', desc: 'docker build -t app:latest .', time: '48s' },
+                  { job: 'test', desc: 'go test ./... && php artisan test', time: '22s' },
+                  { job: 'deploy', desc: 'push image + restart service', time: '29s' },
+                  { job: 'monitor', desc: 'health check + log tailing', time: '—' }
+            ];
+
+            /* =========================================================
+               RENDER
+               ========================================================= */
             document.getElementById('year').textContent = new Date().getFullYear();
 
-            // Theme toggle (dark / light)
-            const html = document.documentElement;
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = document.getElementById('themeIcon');
-            const themeToggleMobile = document.getElementById('themeToggleMobile');
-            const themeIconMobile = document.getElementById('themeIconMobile');
+            // -- Marquee status service
+            (function renderTech() {
+                  const track = document.getElementById('techTrack');
+                  const chip = function (name) {
+                        return '<span class="shrink-0 flex items-center gap-2 text-[11px] px-3">' +
+                              '<span style="color:var(--green)">●</span>' +
+                              '<span style="color:var(--dim)">' + name + '</span>' +
+                              '<span style="color:var(--green)">Up</span>' +
+                              '<span style="color:var(--border)">|</span></span>';
+                  };
+                  const html = TECH.map(chip).join('');
+                  track.innerHTML = html + html; // digandakan supaya loop mulus
+            })();
 
-            function setThemeIcon() {
-                  const isDark = html.classList.contains('dark');
-                  themeIcon.textContent = isDark ? '☀️' : '🌙';
-                  themeIconMobile.textContent = isDark ? '☀️' : '🌙';
+            // -- Skill tree
+            (function renderSkills() {
+                  const wrap = document.getElementById('skillTree');
+                  wrap.innerHTML = SKILLS.map(function (s) {
+                        const items = s.items.map(function (it, i) {
+                              const branch = i === s.items.length - 1 ? '└──' : '├──';
+                              return '<p><span style="color:var(--border)">' + branch + '</span> ' + it + '</p>';
+                        }).join('');
+                        return '' +
+                              '<div>' +
+                              '  <p class="mb-1"><span style="color:' + s.color + '">▸ ' + s.dir + '/</span></p>' +
+                              '  <div class="pl-1 space-y-0.5 text-[12.5px]">' + items + '</div>' +
+                              '  <p class="mt-2 text-[11.5px]">' +
+                              '    <span class="skill-bar" data-level="' + s.level + '" data-color="' + s.color + '"></span>' +
+                              '  </p>' +
+                              '</div>';
+                  }).join('');
+            })();
+
+            // -- Pipeline
+            (function renderPipeline() {
+                  const wrap = document.getElementById('pipeline');
+                  wrap.innerHTML = PIPELINE.map(function (s, i) {
+                        return '' +
+                              '<div class="box p-3 flex items-center gap-3 box-hover">' +
+                              '  <span class="ok shrink-0">✔</span>' +
+                              '  <span class="text-[11px] shrink-0" style="color:var(--dim)">' + (i + 1) + '/' + PIPELINE.length + '</span>' +
+                              '  <span class="text-[12.5px] font-semibold shrink-0 w-[74px]">' + s.job + '</span>' +
+                              '  <span class="text-[11.5px] truncate" style="color:var(--dim)">' + s.desc + '</span>' +
+                              '  <span class="ml-auto text-[11px] shrink-0" style="color:var(--cyan)">' + s.time + '</span>' +
+                              '</div>';
+                  }).join('');
+            })();
+
+            // -- Projects
+            function projectCard(p) {
+                  const links = p.links.map(function (l) {
+                        return '<a href="' + l.url + '" target="_blank" rel="noopener" class="text-[11px] hover:underline" style="color:var(--cyan)">' + l.label + ' ↗</a>';
+                  }).join('<span style="color:var(--border)"> · </span>');
+
+                  return '' +
+                        '<article class="project-card box box-hover overflow-hidden flex flex-col" data-category="' + p.cat + '">' +
+                        '  <div class="relative h-36 overflow-hidden" style="border-bottom:1px solid var(--border)">' +
+                        '    <img src="' + p.img + '" alt="' + p.title + '" loading="lazy" class="w-full h-full object-cover" />' +
+                        '    <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(7,10,17,.92), rgba(7,10,17,.35))"></div>' +
+                        (p.featured ? '    <span class="absolute top-2 left-2 text-[9px] px-1.5 py-0.5" style="background:var(--green);color:#07101a">★ featured</span>' : '') +
+                        '    <span class="absolute top-2 right-2 text-[9px] px-1.5 py-0.5" style="border:1px solid rgba(255,255,255,.2);color:#cbd5e1">' + p.badge + '</span>' +
+                        '    <div class="absolute bottom-2 left-3 right-3">' +
+                        '      <p class="text-[12.5px] font-semibold" style="color:#e2e8f0">' + p.name + '/</p>' +
+                        '      <p class="text-[10px] mt-0.5" style="color:#94a3b8">' + p.stack + '</p>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '  <div class="p-3.5 flex-1 flex flex-col">' +
+                        '    <p class="text-[11px] mb-2" style="color:var(--dim)">' +
+                        '      <span style="color:var(--green)">-rw-r--r--</span> raihan staff ' + p.size + ' ' + p.title +
+                        '    </p>' +
+                        '    <p class="text-[11.5px] leading-relaxed mb-3">' + p.desc + '</p>' +
+                        '    <div class="mt-auto pt-3 space-y-1 text-[11px]" style="border-top:1px solid var(--border)">' +
+                        '      <p><span style="color:var(--dim)">peran </span>' + p.role + '</p>' +
+                        '      <p><span style="color:var(--dim)">fitur </span>' + p.feature + '</p>' +
+                        '      <p class="pt-1">' + (links || '<span style="color:var(--dim)">// repo privat</span>') + '</p>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '</article>';
             }
+            document.getElementById('projectGrid').innerHTML = PROJECTS.map(projectCard).join('');
 
+            /* =========================================================
+               INTERAKSI
+               ========================================================= */
+
+            // -- localStorage bisa dilarang (mode privat); jangan sampai mematikan script
+            const store = {
+                  get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                  set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+            };
+
+            const html = document.documentElement;
+            const themeLabel = document.getElementById('themeLabel');
+
+            if (store.get('theme') === 'light') html.classList.remove('dark');
+
+            function setThemeLabel() {
+                  themeLabel.textContent = html.classList.contains('dark') ? '[dark]' : '[light]';
+            }
             function toggleTheme() {
                   html.classList.toggle('dark');
-                  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-                  setThemeIcon();
+                  store.set('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                  setThemeLabel();
+                  if (window.__applyScene3DTheme) window.__applyScene3DTheme();
             }
+            setThemeLabel();
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-            // Init theme from localStorage
-            if (localStorage.getItem('theme') === 'dark') {
-                  html.classList.add('dark');
-            }
-            setThemeIcon();
-
-            themeToggle.addEventListener('click', toggleTheme);
-            themeToggleMobile.addEventListener('click', toggleTheme);
-
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
+            // -- Menu mobile
             const mobileMenu = document.getElementById('mobileMenu');
-
-            menuToggle.addEventListener('click', () => {
+            document.getElementById('menuToggle').addEventListener('click', function () {
                   mobileMenu.classList.toggle('hidden');
             });
-
-            // Close mobile menu on click nav
-            mobileMenu.querySelectorAll('a').forEach(link => {
-                  link.addEventListener('click', () => {
-                        mobileMenu.classList.add('hidden');
-                  });
+            mobileMenu.querySelectorAll('a').forEach(function (a) {
+                  a.addEventListener('click', function () { mobileMenu.classList.add('hidden'); });
             });
 
-            // Project filtering
-            const filterButtons = document.querySelectorAll('.project-filter');
-            const projectCards = document.querySelectorAll('.project-card');
+            // -- Status bar: jam, scroll, path aktif
+            const sbClock = document.getElementById('sbClock');
+            const sbScroll = document.getElementById('sbScroll');
+            const sbPath = document.getElementById('sbPath');
+            const toTop = document.getElementById('toTop');
 
-            filterButtons.forEach(btn => {
-                  btn.addEventListener('click', () => {
-                        const filter = btn.dataset.filter;
+            setInterval(function () {
+                  sbClock.textContent = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            }, 1000);
 
-                        filterButtons.forEach(b => {
-                              b.classList.remove('bg-primary', 'text-white', 'border-primary');
-                              b.classList.add('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-100');
-                        });
+            const navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+            const PATHS = { hero: '~', about: '~/about', skills: '~/skills', devops: '~/.github/workflows', projects: '~/projects', console: '~/shell', contact: '~/contact' };
 
-                        btn.classList.add('bg-primary', 'text-white', 'border-primary');
-                        btn.classList.remove('border-slate-200', 'dark:border-slate-700', 'text-slate-700', 'dark:text-slate-100');
+            function onScroll() {
+                  const y = window.scrollY;
+                  const max = document.documentElement.scrollHeight - window.innerHeight;
+                  sbScroll.textContent = (max > 0 ? Math.round((y / max) * 100) : 0) + '%';
 
-                        projectCards.forEach(card => {
-                              const category = card.dataset.category.split(' ');
-                              if (filter === 'all' || category.includes(filter)) {
-                                    card.classList.remove('hidden');
-                              } else {
-                                    card.classList.add('hidden');
-                              }
-                        });
-                  });
-            });
+                  if (y > 400) toTop.classList.remove('opacity-0', 'pointer-events-none');
+                  else toTop.classList.add('opacity-0', 'pointer-events-none');
 
-            // Simple scroll animation
-            const animatedElements = document.querySelectorAll('[data-animate]');
-            animatedElements.forEach(el => {
-                  el.classList.add('opacity-0', 'translate-y-4', 'transition', 'duration-700');
-            });
-
-            const observer = new IntersectionObserver(entries => {
-                  entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                              entry.target.classList.remove('opacity-0', 'translate-y-4');
-                              observer.unobserve(entry.target);
+                  // Section aktif ditentukan dari posisi, bukan IntersectionObserver,
+                  // supaya tetap benar setelah lompatan scroll besar.
+                  let current = 'hero';
+                  navLinks.forEach(function (l) {
+                        const el = document.querySelector(l.getAttribute('href'));
+                        if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) {
+                              current = el.id;
                         }
                   });
-            }, {
-                  threshold: 0.15
+                  navLinks.forEach(function (l) {
+                        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+                  });
+                  sbPath.textContent = PATHS[current] || '~';
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+            toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+            // -- Filter project
+            const filterButtons = document.querySelectorAll('.project-filter');
+            const grepArg = document.getElementById('grepArg');
+            const projectCount = document.getElementById('projectCount');
+
+            filterButtons.forEach(function (btn) {
+                  btn.addEventListener('click', function () {
+                        filterButtons.forEach(function (b) { b.classList.remove('active'); });
+                        btn.classList.add('active');
+
+                        const filter = btn.dataset.filter;
+                        grepArg.textContent = filter === 'all' ? '--all' : '"' + filter + '"';
+
+                        let shown = 0;
+                        document.querySelectorAll('.project-card').forEach(function (card) {
+                              const cats = card.dataset.category.split(' ');
+                              const show = filter === 'all' || cats.indexOf(filter) !== -1;
+                              card.style.display = show ? '' : 'none';
+                              if (show) {
+                                    shown++;
+                                    card.animate(
+                                          [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
+                                          { duration: 300, easing: 'ease-out' }
+                                    );
+                              }
+                        });
+                        projectCount.textContent = shown;
+                  });
             });
 
-            animatedElements.forEach(el => observer.observe(el));
+            // -- Reveal + counter + skill bar
+            //
+            // Sengaja TIDAK memakai IntersectionObserver: kalau elemen melompati viewport
+            // di antara dua frame (scroll cepat, tombol End, atau membuka halaman lewat
+            // link #anchor), observer tidak pernah melaporkan perubahan sehingga elemen
+            // tersangkut di opacity 0 selamanya. Sweep ini dievaluasi ulang tiap scroll.
+            let pending = Array.prototype.slice.call(
+                  document.querySelectorAll('[data-animate], .counter, .skill-bar')
+            );
 
-            function sendWhatsApp() {
+            function runCounter(el) {
+                  const to = parseInt(el.dataset.to, 10) || 0;
+                  let cur = 0;
+                  const step = Math.max(1, Math.round(to / 24));
+                  const tick = setInterval(function () {
+                        cur += step;
+                        if (cur >= to) { cur = to; clearInterval(tick); }
+                        el.textContent = cur;
+                  }, 38);
+            }
+
+            function drawBar(el) {
+                  const level = parseInt(el.dataset.level, 10) || 0;
+                  const total = 22;
+                  const color = el.dataset.color;
+                  let i = 0;
+                  const target = Math.round((level / 100) * total);
+                  const tick = setInterval(function () {
+                        i++;
+                        if (i >= target) clearInterval(tick);
+                        // Label memakai angka level asli, bukan hasil pembulatan jumlah
+                        // blok — 22 blok tidak bisa mewakili semua persentase dengan tepat.
+                        const shown = i >= target ? level : Math.round((i / target) * level);
+                        el.innerHTML =
+                              '<span style="color:var(--border)">[</span>' +
+                              '<span style="color:' + color + '">' + '█'.repeat(i) + '</span>' +
+                              '<span style="color:var(--border)">' + '░'.repeat(total - i) + '</span>' +
+                              '<span style="color:var(--border)">]</span> ' +
+                              '<span style="color:' + color + '">' + shown + '%</span>';
+                  }, 32);
+            }
+
+            function activate(el) {
+                  if (el.hasAttribute('data-animate')) el.classList.add('is-in');
+                  else if (el.classList.contains('counter')) runCounter(el);
+                  else drawBar(el);
+            }
+
+            function sweep() {
+                  if (!pending.length) return;
+                  const limit = window.innerHeight * 0.92;
+                  pending = pending.filter(function (el) {
+                        // Sudah masuk viewport, atau sudah terlewati di atas layar.
+                        if (el.getBoundingClientRect().top < limit) { activate(el); return false; }
+                        return true;
+                  });
+            }
+
+            window.addEventListener('scroll', sweep, { passive: true });
+            window.addEventListener('resize', sweep);
+            window.addEventListener('hashchange', sweep);
+            window.addEventListener('load', sweep);
+            sweep();
+
+            // Beberapa detik pertama layout masih bisa bergeser (font & gambar baru
+            // selesai dimuat, browser memulihkan posisi scroll), jadi sweep dipompa
+            // sebentar lalu berhenti sendiri.
+            // onScroll ikut dipanggil supaya tab aktif & status bar benar ketika
+            // halaman dibuka langsung lewat link #anchor (hashchange tidak dipicu
+            // pada load pertama).
+            (function pump(start) {
+                  sweep();
+                  onScroll();
+                  if (performance.now() - start < 2500) {
+                        requestAnimationFrame(function () { pump(start); });
+                  }
+            })(performance.now());
+
+            // -- Boot log di hero
+            (function bootLog() {
+                  const el = document.getElementById('bootLog');
+                  const lines = [
+                        '<span class="dim">[  0.000000]</span> booting raihan-portfolio v2 ...',
+                        '<span class="dim">[  0.412000]</span> loading stack <span class="ok">laravel</span> <span class="ok">golang</span> <span class="ok">docker</span> <span class="ok">postgresql</span>',
+                        '<span class="dim">[  0.884000]</span> mounting <span class="info">/projects</span> ... <span class="ok">ok</span> <span class="dim">(9 entries)</span>',
+                        '<span class="dim">[  1.203000]</span> service <span class="mag">raihan.service</span> ... <span class="ok">[ READY ]</span>'
+                  ];
+                  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                  if (reduced) {
+                        el.innerHTML = lines.map(function (l) { return '<p>' + l + '</p>'; }).join('');
+                        return;
+                  }
+                  let i = 0;
+                  (function next() {
+                        if (i >= lines.length) return;
+                        const p = document.createElement('p');
+                        p.innerHTML = lines[i++];
+                        p.style.opacity = '0';
+                        el.appendChild(p);
+                        p.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, fill: 'forwards' });
+                        setTimeout(next, 330);
+                  })();
+            })();
+
+            // -- Form → WhatsApp
+            function sendWhatsApp(ev) {
+                  if (ev) ev.preventDefault();
                   const nama = document.getElementById('name').value;
                   const kontak = document.getElementById('emailwa').value;
                   const project = document.getElementById('project').value;
                   const deskripsi = document.getElementById('description').value;
 
-                  const phone = "6282119978945";
-                  const message = `Halo, saya tertarik dengan jasa Anda.%0A%0A
-Nama: ${nama}%0A
-Kontak: ${kontak}%0A
-Jenis Project: ${project}%0A
-Deskripsi: ${deskripsi}`;
+                  const message =
+                        'Halo, saya tertarik dengan jasa Anda.\n\n' +
+                        'Nama: ' + nama + '\n' +
+                        'Kontak: ' + kontak + '\n' +
+                        'Jenis Project: ' + project + '\n' +
+                        'Deskripsi: ' + deskripsi;
 
-                  const url = `https://wa.me/${phone}?text=${message}`;
-                  window.open(url, '_blank');
+                  window.open('https://wa.me/6282119978945?text=' + encodeURIComponent(message), '_blank');
+                  return false;
             }
+
+            // -- Tombol darurat: putar "crash" sebentar lalu pindah ke 500.html.
+            //    Kalau JS mati atau reduce-motion aktif, anchor-nya jalan normal.
+            (function panic() {
+                  const btn = document.getElementById('panicBtn');
+                  if (!btn) return;
+
+                  const LINES = [
+                        'PANIC: kernel terlalu ngantuk untuk melanjutkan',
+                        '',
+                        '[  0.000000] sudah dibilang jangan dipencet',
+                        '[  0.041000] menutup koneksi database ......... <span style="color:#F5C518">gagal</span>',
+                        '[  0.128000] menyimpan pekerjaan yang belum di-commit ... <span style="color:#FF6B6B">gagal</span>',
+                        '[  0.310000] mencari orang untuk disalahkan ..... <span style="color:#3DDC84">ok</span>',
+                        '[  0.492000] dumping core ke /dev/null',
+                        '',
+                        'mengalihkan ke halaman error ...'
+                  ];
+
+                  btn.addEventListener('click', function (e) {
+                        if (e.metaKey || e.ctrlKey || e.shiftKey) return; // biarkan buka di tab baru
+                        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                        e.preventDefault();
+
+                        const overlay = document.createElement('div');
+                        overlay.className = 'crash';
+                        document.body.appendChild(overlay);
+                        document.body.classList.add('crashing');
+
+                        let i = 0;
+                        (function next() {
+                              if (i < LINES.length) {
+                                    const p = document.createElement('p');
+                                    p.style.margin = '0';
+                                    p.innerHTML = LINES[i++] || '&nbsp;';
+                                    overlay.appendChild(p);
+                                    setTimeout(next, 95);
+                                    return;
+                              }
+                              setTimeout(function () { window.location.href = '500.html?from=panic'; }, 320);
+                        })();
+                  });
+            })();
+
+            /* =========================================================
+               KONSOL INTERAKTIF
+               ========================================================= */
+            (function shell() {
+                  const log = document.getElementById('consoleLog');
+                  const input = document.getElementById('consoleInput');
+                  const history = [];
+                  let hIndex = -1;
+
+                  function esc(s) {
+                        return String(s).replace(/[&<>]/g, function (c) {
+                              return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+                        });
+                  }
+
+                  function print(htmlStr) {
+                        const p = document.createElement('p');
+                        p.innerHTML = htmlStr;
+                        log.appendChild(p);
+                        log.scrollTop = log.scrollHeight;
+                  }
+
+                  function printPrompt(cmd) {
+                        print('<span class="p-user">visitor@raihan</span><span class="dim">:</span>' +
+                              '<span class="p-path">~</span><span class="p-sign">$</span> ' + esc(cmd));
+                  }
+
+                  const COMMANDS = {
+                        help: function () {
+                              print('<span class="dim">perintah yang tersedia:</span>');
+                              [
+                                    ['whoami', 'siapa saya'],
+                                    ['about', 'tentang saya lengkap'],
+                                    ['skills', 'daftar skill & tools'],
+                                    ['projects', 'daftar project'],
+                                    ['open &lt;nama&gt;', 'buka link project'],
+                                    ['contact', 'info kontak'],
+                                    ['neofetch', 'ringkasan sistem'],
+                                    ['theme', 'ganti terang / gelap'],
+                                    ['date', 'tanggal & jam sekarang'],
+                                    ['clear', 'bersihkan layar'],
+                                    ['panic', 'rusakkan server (bercanda)']
+                              ].forEach(function (c) {
+                                    print('  <span class="ok">' + c[0] + '</span>' +
+                                          '<span class="dim">' + ' '.repeat(Math.max(1, 18 - c[0].length)) + c[1] + '</span>');
+                              });
+                        },
+                        whoami: function () {
+                              print('<span class="ok">raihan alrasyid</span> <span class="dim">— Backend &amp; DevOps Engineer</span>');
+                              print('<span class="dim">Laravel · Golang · Docker · CI/CD · PostgreSQL</span>');
+                        },
+                        about: function () {
+                              print('Saya developer backend yang tidak berhenti di <span class="info">merge to main</span>.');
+                              print('Sebuah fitur selesai kalau sudah ter-deploy, terpantau, dan gampang di-rollback.');
+                              print('<span class="dim">// lihat section ~/about untuk versi lengkapnya</span>');
+                        },
+                        skills: function () {
+                              SKILLS.forEach(function (s) {
+                                    print('<span style="color:' + s.color + '">▸ ' + s.dir + '/</span> <span class="dim">' + s.items.join(', ') + '</span>');
+                              });
+                        },
+                        projects: function () {
+                              print('<span class="dim">total ' + PROJECTS.length + '</span>');
+                              PROJECTS.forEach(function (p) {
+                                    print('<span class="ok">-rw-r--r--</span> <span class="dim">raihan staff ' + p.size + '</span> ' +
+                                          '<span class="info">' + p.name + '</span> <span class="dim">— ' + p.stack + '</span>');
+                              });
+                              print('<span class="dim">// ketik: open ' + PROJECTS[0].name + '</span>');
+                        },
+                        open: function (arg) {
+                              if (!arg) return print('<span class="warn">usage:</span> open &lt;nama-project&gt;');
+                              const p = PROJECTS.filter(function (x) { return x.name === arg; })[0];
+                              if (!p) return print('<span class="warn">tidak ditemukan:</span> ' + esc(arg));
+                              if (!p.links.length) return print('<span class="dim">' + p.name + ' — repo privat, tidak ada link publik</span>');
+                              print('membuka <span class="info">' + p.links[0].url + '</span> ...');
+                              window.open(p.links[0].url, '_blank');
+                        },
+                        contact: function () {
+                              print('<span class="dim">email    </span> raihanalrasyid20@gmail.com');
+                              print('<span class="dim">whatsapp </span> +62 821 1997 8945');
+                              print('<span class="dim">github   </span> github.com/raihanpcr');
+                        },
+                        neofetch: function () {
+                              [
+                                    ['host', 'raihan@portfolio'],
+                                    ['role', 'Backend & DevOps Engineer'],
+                                    ['shell', 'bash / zsh'],
+                                    ['stack', 'Laravel, Golang, PostgreSQL, Docker'],
+                                    ['projects', PROJECTS.length + ' rilis'],
+                                    ['status', 'open to work · freelance'],
+                                    ['theme', html.classList.contains('dark') ? 'dark' : 'light']
+                              ].forEach(function (r) {
+                                    print('<span class="ok">' + r[0] + '</span>' +
+                                          '<span class="dim">' + ' '.repeat(Math.max(1, 11 - r[0].length)) + '</span>' + esc(r[1]));
+                              });
+                        },
+                        theme: function () { toggleTheme(); print('tema: <span class="ok">' + (html.classList.contains('dark') ? 'dark' : 'light') + '</span>'); },
+                        date: function () { print('<span class="dim">' + new Date().toString() + '</span>'); },
+                        clear: function () { log.innerHTML = ''; },
+                        panic: function () {
+                              print('<span class="warn">memicu kegagalan server ...</span>');
+                              print('<span class="dim">jangan khawatir, ini cuma halaman candaan.</span>');
+                              setTimeout(function () { window.location.href = '500.html?from=panic'; }, 700);
+                        },
+                        sudo: function () { print('<span class="warn">visitor is not in the sudoers file. This incident will be reported.</span>'); },
+                        exit: function () { print('<span class="dim">nice try. tab ini punya kamu, bukan saya :)</span>'); }
+                  };
+
+                  const ALIASES = {
+                        ls: 'projects', 'ls -la': 'projects', stack: 'skills', bio: 'about',
+                        hire: 'contact', me: 'whoami', '?': 'help', '500': 'panic', crash: 'panic'
+                  };
+
+                  function run(raw) {
+                        const line = raw.trim();
+                        if (!line) return;
+                        history.push(line);
+                        hIndex = history.length;
+                        printPrompt(line);
+
+                        const parts = line.split(/\s+/);
+                        let cmd = (ALIASES[line.toLowerCase()] || ALIASES[parts[0].toLowerCase()] || parts[0]).toLowerCase();
+                        const arg = parts.slice(1).join(' ');
+
+                        if (COMMANDS[cmd]) COMMANDS[cmd](arg);
+                        else print('<span class="warn">command not found:</span> ' + esc(parts[0]) + ' <span class="dim">— ketik \'help\'</span>');
+                  }
+
+                  input.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') { run(input.value); input.value = ''; }
+                        else if (e.key === 'ArrowUp') {
+                              e.preventDefault();
+                              if (hIndex > 0) { hIndex--; input.value = history[hIndex]; }
+                        } else if (e.key === 'ArrowDown') {
+                              e.preventDefault();
+                              if (hIndex < history.length - 1) { hIndex++; input.value = history[hIndex]; }
+                              else { hIndex = history.length; input.value = ''; }
+                        } else if (e.key === 'l' && e.ctrlKey) { e.preventDefault(); log.innerHTML = ''; }
+                  });
+
+                  // Klik di mana saja pada window konsol akan memfokuskan input
+                  document.getElementById('console').addEventListener('click', function (e) {
+                        if (!e.target.closest('a')) input.focus();
+                  });
+
+                  print('<span class="dim">raihan-shell 1.0 — ketik </span><span class="ok">help</span><span class="dim"> untuk melihat perintah.</span>');
+            })();
+
+            /* =========================================================
+               SCENE 3D — topologi cluster
+               ========================================================= */
+            (function scene3D() {
+                  const canvas = document.getElementById('hero3d');
+                  const wrap = document.getElementById('hero3dWrap');
+                  const fallback = document.getElementById('hero3dFallback');
+
+                  function giveUp() {
+                        if (canvas) canvas.style.display = 'none';
+                        if (fallback) fallback.classList.remove('hidden');
+                  }
+                  if (!canvas || typeof THREE === 'undefined') return giveUp();
+
+                  let renderer;
+                  try {
+                        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+                  } catch (err) { return giveUp(); }
+                  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+                  const scene = new THREE.Scene();
+                  const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 120);
+                  camera.position.set(0, 0.6, 10.5);
+
+                  const world = new THREE.Group();
+                  scene.add(world);
+
+                  // Palet mengikuti warna ANSI terminal
+                  const PALETTE = {
+                        dark: { core: 0x3DDC84, emissive: 0x0B5132, node: 0x22D3EE, link: 0x3DDC84, ring: 0xF5C518, dust: 0x64748B, dustOp: 0.45, linkOp: 0.3, edgeOp: 0.55 },
+                        light: { core: 0x17914B, emissive: 0x0B5132, node: 0x0B7C91, link: 0x17914B, ring: 0xA66A00, dust: 0x475569, dustOp: 0.3, linkOp: 0.28, edgeOp: 0.35 }
+                  };
+                  function palette() { return html.classList.contains('dark') ? PALETTE.dark : PALETTE.light; }
+
+                  const coreMat = new THREE.MeshStandardMaterial({ color: 0x3DDC84, emissive: 0x0B5132, emissiveIntensity: 0.8, metalness: 0.45, roughness: 0.3, flatShading: true });
+                  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.1, 1), coreMat);
+                  world.add(core);
+
+                  const shellMat = new THREE.MeshBasicMaterial({ color: 0x3DDC84, wireframe: true, transparent: true, opacity: 0.2 });
+                  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.7, 1), shellMat);
+                  world.add(shell);
+
+                  const NODE_COUNT = 8;
+                  const RADIUS = 3.4;
+                  const nodes = [];
+                  const nodeGeo = new THREE.BoxGeometry(0.48, 0.48, 0.48);
+                  const nodeMat = new THREE.MeshStandardMaterial({ color: 0x22D3EE, emissive: 0x0E4A55, emissiveIntensity: 0.4, metalness: 0.35, roughness: 0.4 });
+                  const edgeMat = new THREE.LineBasicMaterial({ color: 0xE0F7FA, transparent: true, opacity: 0.55 });
+                  const edgeGeo = new THREE.EdgesGeometry(nodeGeo);
+
+                  for (let i = 0; i < NODE_COUNT; i++) {
+                        // distribusi fibonacci sphere supaya menyebar rata
+                        const y = 1 - (i / (NODE_COUNT - 1)) * 2;
+                        const r = Math.sqrt(Math.max(0, 1 - y * y));
+                        const theta = i * 2.399963;
+                        const pos = new THREE.Vector3(Math.cos(theta) * r, y * 0.75, Math.sin(theta) * r).multiplyScalar(RADIUS);
+
+                        const mesh = new THREE.Mesh(nodeGeo, nodeMat.clone());
+                        mesh.position.copy(pos);
+                        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+                        mesh.add(new THREE.LineSegments(edgeGeo, edgeMat));
+                        world.add(mesh);
+                        nodes.push({ mesh: mesh, base: pos.clone(), phase: Math.random() * Math.PI * 2 });
+                  }
+
+                  const linkPositions = new Float32Array(NODE_COUNT * 6);
+                  nodes.forEach(function (n, i) {
+                        linkPositions[i * 6 + 3] = n.base.x;
+                        linkPositions[i * 6 + 4] = n.base.y;
+                        linkPositions[i * 6 + 5] = n.base.z;
+                  });
+                  const linkGeo = new THREE.BufferGeometry();
+                  linkGeo.setAttribute('position', new THREE.BufferAttribute(linkPositions, 3));
+                  const linkMat = new THREE.LineBasicMaterial({ color: 0x3DDC84, transparent: true, opacity: 0.3 });
+                  world.add(new THREE.LineSegments(linkGeo, linkMat));
+
+                  const packetMat = new THREE.MeshBasicMaterial({ color: 0x7CF7C4 });
+                  const packetGeo = new THREE.SphereGeometry(0.08, 10, 10);
+                  const packets = nodes.map(function (n, i) {
+                        const m = new THREE.Mesh(packetGeo, packetMat);
+                        world.add(m);
+                        return { mesh: m, node: n, t: i / NODE_COUNT, speed: 0.24 + Math.random() * 0.22, dir: i % 2 === 0 ? 1 : -1 };
+                  });
+
+                  const ringMat = new THREE.MeshBasicMaterial({ color: 0xF5C518, transparent: true, opacity: 0.16, side: THREE.DoubleSide });
+                  const rings = [];
+                  [[0.5, 0.2], [1.25, -0.35], [2.1, 0.55]].forEach(function (rot) {
+                        const ring = new THREE.Mesh(new THREE.TorusGeometry(RADIUS + 0.3, 0.011, 6, 140), ringMat);
+                        ring.rotation.set(Math.PI / 2 + rot[1], rot[0], 0);
+                        world.add(ring);
+                        rings.push(ring);
+                  });
+
+                  const DUST = 380;
+                  const dustPos = new Float32Array(DUST * 3);
+                  for (let i = 0; i < DUST; i++) {
+                        const r = 7 + Math.random() * 11;
+                        const t = Math.random() * Math.PI * 2;
+                        const p = Math.acos(2 * Math.random() - 1);
+                        dustPos[i * 3] = r * Math.sin(p) * Math.cos(t);
+                        dustPos[i * 3 + 1] = r * Math.cos(p) * 0.55;
+                        dustPos[i * 3 + 2] = r * Math.sin(p) * Math.sin(t);
+                  }
+                  const dustGeo = new THREE.BufferGeometry();
+                  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+                  const dustMat = new THREE.PointsMaterial({ color: 0x64748B, size: 0.042, transparent: true, opacity: 0.45, sizeAttenuation: true });
+                  const dust = new THREE.Points(dustGeo, dustMat);
+                  scene.add(dust);
+
+                  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+                  const key = new THREE.PointLight(0x3DDC84, 1.4, 60); key.position.set(6, 6, 8); scene.add(key);
+                  const fill = new THREE.PointLight(0x22D3EE, 1.1, 60); fill.position.set(-7, -3, 5); scene.add(fill);
+
+                  function applyTheme() {
+                        const p = palette();
+                        coreMat.color.setHex(p.core);
+                        coreMat.emissive.setHex(p.emissive);
+                        shellMat.color.setHex(p.core);
+                        linkMat.color.setHex(p.link); linkMat.opacity = p.linkOp;
+                        ringMat.color.setHex(p.ring);
+                        dustMat.color.setHex(p.dust); dustMat.opacity = p.dustOp;
+                        edgeMat.opacity = p.edgeOp;
+                        nodes.forEach(function (n) { n.mesh.material.color.setHex(p.node); });
+                  }
+                  window.__applyScene3DTheme = applyTheme;
+                  applyTheme();
+
+                  function resize() {
+                        const w = wrap.clientWidth || 1;
+                        const h = wrap.clientHeight || 1;
+                        renderer.setSize(w, h, false);
+                        camera.aspect = w / h;
+                        camera.updateProjectionMatrix();
+                  }
+                  resize();
+                  if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap);
+                  else window.addEventListener('resize', resize);
+
+                  const target = { x: 0, y: 0 };
+                  const current = { x: 0, y: 0 };
+                  wrap.addEventListener('pointermove', function (e) {
+                        const r = wrap.getBoundingClientRect();
+                        target.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+                        target.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+                  });
+                  wrap.addEventListener('pointerleave', function () { target.x = 0; target.y = 0; });
+
+                  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                  const clock = new THREE.Clock();
+                  let visible = true;
+                  document.addEventListener('visibilitychange', function () { visible = !document.hidden; });
+                  const tmp = new THREE.Vector3();
+
+                  function frame() {
+                        requestAnimationFrame(frame);
+                        if (!visible) return;
+                        const t = clock.getElapsedTime();
+
+                        current.x += (target.x - current.x) * 0.05;
+                        current.y += (target.y - current.y) * 0.05;
+
+                        world.rotation.y = t * 0.12 + current.x * 0.5;
+                        world.rotation.x = Math.sin(t * 0.18) * 0.08 + current.y * 0.32;
+
+                        core.rotation.y = t * 0.35;
+                        core.rotation.x = t * 0.18;
+                        shell.rotation.y = -t * 0.22;
+                        core.scale.setScalar(1 + Math.sin(t * 2.1) * 0.035);
+
+                        nodes.forEach(function (n, i) {
+                              const bob = Math.sin(t * 1.1 + n.phase) * 0.16;
+                              n.mesh.position.copy(n.base);
+                              n.mesh.position.y = n.base.y + bob;
+                              n.mesh.rotation.x += 0.004;
+                              n.mesh.rotation.y += 0.006;
+
+                              linkPositions[i * 6 + 3] = n.mesh.position.x;
+                              linkPositions[i * 6 + 4] = n.mesh.position.y;
+                              linkPositions[i * 6 + 5] = n.mesh.position.z;
+                        });
+                        linkGeo.attributes.position.needsUpdate = true;
+
+                        packets.forEach(function (p) {
+                              p.t += p.speed * 0.012 * p.dir;
+                              if (p.t > 1) { p.t = 1; p.dir = -1; }
+                              if (p.t < 0) { p.t = 0; p.dir = 1; }
+                              tmp.copy(p.node.mesh.position).multiplyScalar(p.t);
+                              p.mesh.position.copy(tmp);
+                              p.mesh.scale.setScalar(0.85 + Math.sin(t * 6 + p.t * 6) * 0.3);
+                        });
+
+                        rings.forEach(function (r, i) { r.rotation.z += 0.0016 * (i + 1); });
+                        dust.rotation.y = t * 0.015;
+
+                        renderer.render(scene, camera);
+                  }
+
+                  if (reduced) { resize(); renderer.render(scene, camera); }
+                  else frame();
+            })();
       </script>
 </body>
 
